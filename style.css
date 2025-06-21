@@ -1,0 +1,502 @@
+/* 全体のリセットと基本設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #000;
+  background-color: #fff;
+}
+
+/* ナビゲーションバー */
+.navbar {
+  width: 100%;
+  background: #fff;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  text-align: center;
+}
+
+.navbar nav a {
+  margin: 0 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+}
+
+.navbar nav a:hover {
+  text-decoration: underline;
+}
+
+/* ファーストビュー */
+.hero {
+  width: 100%;
+  height: 100vh;
+  background: url('images/hero.JPG') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  
+}
+
+.hero-title {
+  color: white;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+  text-align: center;
+
+  
+}
+
+/* セクション共通 */
+.section {
+  padding: 4rem 1rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* MOVIEセクション */
+.movie-section {
+  background: #111;
+  color: #fff;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+}
+
+.movie-box {
+  width: 100%;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 アスペクト比 */
+  height: 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ボタン共通 */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff; /* ← 白背景に修正 */
+  border: 2px solid #000;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+
+.more-button {
+  margin-top: 3rem;
+}
+
+.view-all {
+  display: inline-block;
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+/* PROFILEセクション（背景画像＋中央テキスト） */
+.profile-section {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  background: url('images/pf.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: white;
+}
+
+.profile-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.profile-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.profile-overlay h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-overlay p {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* CONTACTセクション */
+.linktree {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #000;
+  text-decoration: underline;
+}
+
+/* プロフィール画像 */
+.profile-image {
+  display: block;
+  max-width: 400px;
+  width: 90%;
+  height: auto;
+  margin: 0 auto 2rem auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* CONTACTフォーム */
+.contact-form-section {
+  background-color: #f8f8f8;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.contact-form label {
+  display: block;
+  margin: 20px 0 5px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.contact-form button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #333;
+}
+
+/* LIVEセクション */
+.live-list {
+  list-style: none;
+  padding: 0;
+}
+
+.live-list li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+
+.live-list .date {
+  font-weight: bold;
+  color: #555;
+}
+
+.live-list .venue {
+  font-size: 1em;
+  color: #222;
+}
+
+.live-list .desc {
+  font-size: 0.9em;
+  color: #444;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .profile-overlay h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-overlay p {
+    font-size: 0.95rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* profile.html 用セクション */
+.profile-header img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.profile-body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  padding: 60px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  flex-wrap: wrap;
+}
+
+.profile-photo img {
+  width: 100%;
+  max-width: 380px; /* ← 少し大きめに調整（例：400pxでもOK） */
+  margin: 0 auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+.profile-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.profile-text h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-text p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  white-space: pre-line;
+}
+
+.profile-text .btn {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  background-color: transparent;
+  border: 2px solid #000;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.profile-text .btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .profile-body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .profile-text p {
+    font-size: 0.95rem;
+  }
+}
+
+.subpage-header-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* プロフィールページ用 */
+.profile-main {
+  padding: 3rem 1rem;
+  background-color: #fff;
+}
+
+.profile-block {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.profile-main-image {
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  margin: 0 auto 2rem;
+  display: block;
+  border-radius: 10px;
+}
+
+.profile-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-description p {
+  font-size: 1rem;
+  line-height: 1.8;
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.back-button {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+/* 小さなサブページ用ヘッダー */
+.subpage-header-image {
+  width: 100%;
+  height: 220px; /* ← 小さく固定 */
+  object-fit: cover;
+  display: block;
+}
+
+/* プロフィールページ全体 */
+.profile-main {
+  padding: 3rem 1rem;
+  background-color: #fff;
+}
+
+.profile-block {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.profile-main-image {
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  margin: 0 auto 2rem;
+  display: block;
+  border-radius: 10px;
+}
+
+.profile-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-description p {
+  font-size: 1rem;
+  line-height: 1.8;
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.back-button {
+  text-align: center;
+  margin-top: 3rem;
+}
+/* スクロール時のアニメーション */
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 1s ease-out;
+}
+
+.fade-in-left.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.hero-logo {
+  max-width: 80%;
+  height: auto;
+  margin-top: 500px !important;
+opacity: 1;
+  transform: none;
+}
+
+/* 既存のアニメーションを再利用 */
+@keyframes slideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes heroFadeZoom {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero {
+  animation: heroFadeZoom 2.5s ease-out forwards;
+  opacity: 0;
+}
