@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NakayamaDaishi | Official Site</title>
+  <link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
+
+
+<body>
+
+  <!-- ナビゲーション -->
+  <header class="navbar">
+    <nav>
+      <a href="#movie">MOVIE</a>
+      <a href="#profile">PROFILE</a>
+      <a href="#live">LIVE</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
+  </header>
+
+ <!-- ファーストビュー -->
+<section class="hero">
+  <img src="images/moji.png" alt="NakayamaDaishi" class="hero-logo" />
+</section>
+
+
+  <!-- MOVIE -->
+  <section id="movie" class="section movie-section">
+    <h2>MOVIE</h2>
+    <div class="movie-grid">
+      <div class="movie-box fade-in-left">
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/FY0knjHxqX8" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="movie-box fade-in-left">
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/CY9EIVo3M5g" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="movie-box fade-in-left">
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/fuOGROAnBGg" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="more-button">
+      <a href="https://www.youtube.com/@daishinakayama1220" class="btn">MORE VIDEOS</a>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+<!-- PROFILE -->
+<section id="profile" class="profile-section fade-in-left">
+  <div class="profile-overlay">
+    <h2 class="profile-heading">
+      <span class="label">ABOUT</span><br />
+      <span class="name">Nakayama Daishi</span>
+    </h2>
+    <a href="profile.html" class="btn">MORE INFORMATION</a>
+  </div>
+</section>
+
+
+  <!-- LIVE -->
+  <section id="live" class="section">
+    <h2>LIVE</h2>
+    <ul class="live-list">
+      <li>
+        <span class="date">2025.02.04.tue</span>
+        <span class="venue">吉祥寺STAR PINE'S CAFE</span>
+        <span class="desc">w/飛遥,ナルセユウキ</span>
+      </li>
+      <li>
+        <span class="date">2024.11.30.SAT</span>
+        <span class="venue">吉祥寺STAR PINE'S CAFE</span>
+        <span class="desc">「景色と情景」最終章</span>
+      </li>
+      <li>
+        <span class="date">2024.11.08.FRI</span>
+        <span class="venue">新宿SACT!</span>
+        <span class="desc">w/TAMON,たんげまこと,荒牧リョウ</span>
+      </li>
+    </ul>
+    <a href="live.html" class="btn view-all">View All</a>
+  </section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <a href="https://linktr.ee/Daishi_1258" class="linktree-highlight" target="_blank">
+    🔗 ALL LINKS
+  </a>
+</section>
+
+
+
+  <!-- お問い合わせフォーム -->
+  <section id="contact-form" class="section contact-form-section">
+    <h2>お問い合わせフォーム</h2>
+    <form action="https://formspree.io/f/mjkrorgr" method="POST" class="contact-form">
+      <label for="name">お名前</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">メールアドレス</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message">メッセージ</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">送信する</button>
+    </form>
+  </section>
+
+  <!-- アニメーション用スクリプト -->
+  <script>
+    const targets = document.querySelectorAll('.fade-in-left');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    targets.forEach(target => observer.observe(target));
+  </script>
+
+</body>
+</html>

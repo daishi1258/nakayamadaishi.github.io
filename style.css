@@ -1,0 +1,642 @@
+/* 全体のリセットと基本設定 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #000;
+  background-color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+
+}
+
+/* ナビゲーションバー */
+.navbar {
+  width: 100%;
+  background: #fff;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  text-align: center;
+}
+
+.navbar nav a {
+  margin: 0 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+}
+
+.navbar nav a:hover {
+  text-decoration: underline;
+}
+
+/* ファーストビュー */
+.hero {
+  width: 100%;
+  height: 100vh;
+  background: url('images/hero.JPG') no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo {
+  max-width: 80%;
+  height: auto;
+  margin-top: 230px;
+  animation: slideDownFade 2.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+@keyframes slideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* セクション共通 */
+.section {
+  padding: 4rem 1rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* MOVIEセクション */
+.movie-section {
+  background: #111;
+  color: #fff;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+}
+
+.movie-box {
+  width: 100%;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ボタン共通 */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.more-button {
+  margin-top: 3rem;
+}
+
+.view-all {
+  display: inline-block;
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+/* PROFILEセクション */
+.profile-section {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  background: url('images/pf.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: white;
+}
+
+.profile-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.profile-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.profile-overlay h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-overlay p {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* プロフィール画像 */
+.profile-image {
+  display: block;
+  max-width: 400px;
+  width: 90%;
+  height: auto;
+  margin: 0 auto 2rem auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* CONTACTセクション */
+.linktree {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #000;
+  text-decoration: underline;
+}
+
+/* CONTACTフォーム */
+.contact-form-section {
+  background-color: #f8f8f8;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.contact-form label {
+  display: block;
+  margin: 20px 0 5px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.contact-form button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #333;
+}
+
+/* LIVEセクション */
+.live-list {
+  list-style: none;
+  padding: 0;
+}
+
+.live-list li {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+
+.live-list .date {
+  font-weight: bold;
+  color: #555;
+}
+
+.live-list .venue {
+  font-size: 1em;
+  color: #222;
+}
+
+.live-list .desc {
+  font-size: 0.9em;
+  color: #444;
+}
+
+/* スクロールアニメーション */
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 1s ease-out;
+}
+
+.fade-in-left.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .navbar nav a {
+    display: block;
+    margin: 0.5rem 0;
+  }
+
+  .hero-logo {
+    max-width: 150%;
+    margin-top: 0;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .profile-overlay h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-overlay p {
+    font-size: 0.95rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.hero {
+  position: relative !important;
+  height: 100vh !important;
+  background: url('images/hero.JPG') no-repeat center center / cover !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+.hero-logo {
+  max-width: 70% !important;
+  height: auto !important;
+  display: block !important;
+  z-index: 2 !important;
+}
+@keyframes fadeInHero {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero {
+  animation: fadeInHero 1.5s ease-in-out forwards;
+}
+.hero-logo {
+  animation: fadeInHero 1.5s ease-in-out forwards;
+  animation-delay: 0.3s;
+}
+
+
+@media (max-width: 768px) {
+  .hero-logo {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+}
+/* 全画面背景 + ロゴ中央配置 */
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('images/hero.JPG') no-repeat center center / cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ロゴ画像スタイル（PC用） */
+.hero-logo {
+  max-width: 70%;
+  height: auto;
+  display: block;
+  transform: translateY(0%);
+  transition: transform 0.5s ease;
+}
+
+/* 📱 スマホ専用調整（768px以下） */
+@media (max-width: 768px) {
+  .hero-logo {
+    max-width: 105% !important;
+    transform: translateY(30%) !important;  /* ←ここが位置調整ポイント */
+  }
+}
+.profile-heading {
+  font-family: 'Helvetica Neue', sans-serif;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  animation: fadeInUp 1.2s ease-in-out forwards;
+  opacity: 0;
+}
+
+.profile-overlay {
+  text-align: center;
+}
+
+/* 上部の "ABOUT" 部分 */
+.profile-heading .label {
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: #ccc;
+  font-weight: 400;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+/* "Nakayama Daishi" の部分 */
+.profile-heading .name {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 5px;
+}
+
+/* フェードアップアニメーション */
+@keyframes fadeInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@media (max-width: 768px) {
+  .profile-heading .name {
+    font-size: 1.4rem; /* ← 今は 2rem なので調整 */
+  }
+}
+
+#contact {
+  background: url('images/cont.jpg') no-repeat center center / cover;
+  height: 90vh;
+  padding: 6rem 2rem 6rem; /* 上下の余白しっかりとる */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  text-align: center;
+}
+/* モバイル＆PC 共通デザイン */
+.linktree-highlight {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffefba, #ffffff); /* 明るめのゴールド系 */
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 2.2rem;
+  border-radius: 40px;
+  text-decoration: none;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+  max-width: 90vw;
+  width: auto;
+  text-align: center;
+  white-space: nowrap;
+  animation: pulse 3s infinite ease-in-out;
+  position: relative;
+  z-index: 10;
+  margin-top: 2rem; /* 通常の余白 */
+}
+
+/* ホバー効果 */
+.linktree-highlight:hover {
+  transform: scale(1.07);
+  background: linear-gradient(145deg, #fff8cc, #fbeaa0);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+}
+
+/* アニメーション */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+/*スマホ用 */
+@media (max-width: 768px) {
+  .linktree-highlight {
+    animation: pulse 3s infinite ease-in-out !important;
+    position: relative;
+    top: -36vh; /* ← 位置を大きく上に持ち上げる */
+    margin-top: 0 !important; /* ← 重複防止 */
+  }
+}
+
+
+
+
+
+@media (min-width: 769px) {
+  .linktree-highlight {
+    position: relative !important;
+    top: -200px 
+    
+  }
+}
+.btn {
+  background: linear-gradient(135deg, #3ca55c, #b5ac49);
+  color: white;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 20px rgba(60, 165, 92, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, #b5ac49, #3ca55c);
+  box-shadow: 0 10px 30px rgba(60, 165, 92, 0.45);
+}
+
+
+
+
+
+@keyframes pulseGlow {
+  0%   { box-shadow: 0 0 15px rgba(0, 128, 128, 0.4); }
+  50%  { box-shadow: 0 0 30px rgba(0, 128, 255, 0.8); }
+  100% { box-shadow: 0 0 15px rgba(0, 128, 128, 0.4); }
+}
+
+.linktree-highlight {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6a00, #ee0979); /* オレンジ〜ピンク */
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 2.2rem;
+  border-radius: 40px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(255, 105, 135, 0.4);
+  transition: all 0.3s ease;
+  max-width: 90vw;
+  width: auto;
+  text-align: center;
+  white-space: nowrap;
+  animation: pulse 3s infinite ease-in-out;
+  position: relative;
+  z-index: 10;
+  margin-top: 2.5rem;
+}
+
+/* ホバー効果 */
+.linktree-highlight:hover {
+  transform: scale(1.07);
+  background: linear-gradient(135deg, #ff9472, #f2709c);
+  box-shadow: 0 15px 40px rgba(255, 120, 150, 0.6);
+}
+
+/* アニメーション定義 */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+@media (max-width: 768px) {
+  .navbar nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar nav a {
+    display: inline-block; /* ← 横並びにする */
+    margin: 0 1rem;
+    font-size: 0.9rem; /* スマホ用に少し小さめでもOK */
+  }
+}
+.profile-heading .label,
+.profile-heading .name {
+  font-family: 'Cormorant Garamond', serif;
+}
+.full-screen-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-text-section {
+  padding: 4rem 1rem;
+  text-align: center;
+  background-color: #fff;
+}
+
+.profile-text-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.profile-text-section p {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+@media (max-width: 768px) {
+  #contact {
+    background-size: 200%; /* cover より少し小さく見せる */
+    background-repeat: no-repeat;
+    background-position: center top;
+     background-color: #000; /* 余白を黒くする */
+    background-blend-mode: normal;
+    
+  }
+ 
+
+}
+
+
+.back-to-top {
+  text-align: center;
+  margin: 3rem auto 4rem;
+}
+
+.btn-back {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6a00, #ee0979); /* インスタ風オレンジピンク */
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(255, 105, 135, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #ff9472, #f2709c);
+  box-shadow: 0 12px 40px rgba(255, 120, 150, 0.5);
+}
