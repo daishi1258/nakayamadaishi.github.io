@@ -261,13 +261,18 @@ section,
   justify-content: center;
   text-align: center;
   padding: 4rem 1rem;
+  /* ABOUT の背景写真（顔が見えるように縦位置を調整） */
+  background-image: url('images/profile.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 38%;
 }
 
 .profile-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.45);
   z-index: 1;
 }
 
@@ -496,7 +501,7 @@ strong, b {
    CONTACT / LINKTREE セクション
 ========================================== */
 #contact {
-  background: url('images/cont.jpg') no-repeat center center / cover;
+  background: url('images/links.jpg') no-repeat center center / cover;
   height: 80vh;
   padding: 6rem 2rem;
   display: flex;

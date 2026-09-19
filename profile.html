@@ -13,11 +13,41 @@
       background-color: #fff;
     }
 
+    .profile-image-section {
+      overflow: hidden;
+    }
+
     .profile-image-section img {
       width: 100%;
       height: 100vh;
       object-fit: cover;
+      object-position: center 38%; /* 縦長の写真を横長に切り取るとき、顔が中心に来る位置 */
       display: block;
+      animation: photoIn 2.2s ease-out forwards;
+    }
+
+    /* 写真：ふわっと表示しながら、ゆっくり縮む（ズームアウト） */
+    @keyframes photoIn {
+      from { opacity: 0; transform: scale(1.12); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* 文字：スクロールで画面に入ると、下からふわっと表示 */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 動きを減らす設定のOSでは、アニメーションなしで表示 */
+    @media (prefers-reduced-motion: reduce) {
+      .profile-image-section img { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
     .profile-text-section {
@@ -27,6 +57,7 @@
       background-color: #fff;
     }
 
+    .profile-text-section h1,
     .profile-text-section h2 {
       font-size: 2rem;
       margin-bottom: 2rem;
@@ -40,14 +71,49 @@
       text-align: justify;
     }
 
+    /* 紹介文と、2021年からの経歴を区切る（区切り線＋HISTORY見出し） */
     .profile-text-section ul {
-      padding-left: 1.2rem;
+      list-style: none;
+      margin-top: 4rem;
+      padding: 3rem 0 0;
+      border-top: 1px solid #ccc;
       font-size: 1rem;
     }
 
+    .profile-text-section ul::before {
+      content: "HISTORY";
+      display: block;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.3em;
+    }
+
+    /* 経歴：左に縦線、日付を太字で上に、内容をその下に */
     .profile-text-section ul li {
-      margin-bottom: 1.2rem;
-      text-align: justify;
+      margin-bottom: 1.8rem;
+      padding-left: 1.2rem;
+      border-left: 2px solid #ccc;
+      text-align: left;
+    }
+
+    .profile-text-section .history-date {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+    }
+
+    /* microCMS の入力で生まれる空の段落は非表示にする */
+    .profile-text-section p:empty {
+      display: none;
+    }
+
+    .profile-text-section .loading {
+      text-align: center;
+      color: #888;
+      font-style: italic;
     }
 
     @media (max-width: 768px) {
@@ -59,6 +125,7 @@
         padding: 3rem 1rem;
       }
 
+      .profile-text-section h1,
       .profile-text-section h2 {
         font-size: 1.5rem;
       }
@@ -72,31 +139,85 @@
 </head>
 <body>
 
+  <!-- ナビゲーションバー（画面上部のメニューリンク） -->
+  <header class="navbar">
+    <nav>
+      <a href="index.html#movie">MOVIE</a>
+      <a href="profile.html">PROFILE</a>
+      <a href="live.html">LIVE</a>
+      <a href="index.html#contact">CONTACT</a>
+    </nav>
+  </header>
+
   <section class="profile-image-section">
-    <img src="images/color.JPG" alt="Nakayama Daishi" />
+    <img src="images/profile.jpg" alt="Nakayama Daishi" />
   </section>
 
   <section class="profile-text-section">
-    <h2>NakayamaDaishi</h2>
-    <p>
-      三重県出身の音楽家。様々なジャンルの音楽の影響を受けながら独自の世界観を追求し、<br />
-      SSWとしてのソロ演奏から、自ら全ての楽器を演奏し制作、楽曲提供まで幅広く手がけている。<br />
-      使用楽器はGt, Pf, Ba, Dr。<br />
-      自身のリアルタイムの人間活動から感じたことを音楽に昇華し、表現している。
-    </p>
-    <ul>
-      <li>2021年10月 東中野ALT_SPEAKERにて初のワンマンライブ、1st Album「Dummer manN」をリリース。</li>
-      <li>2022年10月 王子music loungeにて初のバンドワンマン。ソールドアウトで大成功を収める。</li>
-      <li>2023年5月 藤元達弥 album「左前も右前も」M8「好きという言葉を何度伝えても」エレキギターで参加。</li>
-      <li>2023年8月 ユニット「mado-159」での作詞作曲編曲、mix、mastering、全楽器演奏、MV制作を自身で手がけリリース。</li>
-      <li>2023年10月～2024年11月 SSW伊々坂友秋と共に一年間の企画「景色と情景」を開催、大成功を収める。</li>
-      <li>2024年9月「squall」リリース。同じくアートワーク含め全て自身で制作する。</li>
-      <li>2025年5月 紅葉 3rd single「アンセルスティカ」表題曲「アンセルスティカ」作編曲、mix, masteringで参加。</li>
-    </ul>
+    <!-- microCMS の「profile」APIから取得した内容がここに入ります -->
+    <div id="profile-content" class="loading">プロフィールを読み込み中...</div>
   </section>
 <div class="back-to-top">
   <a href="index.html" class="btn-back">← トップページに戻る</a>
 </div>
+
+  <script>
+    const SERVICE_DOMAIN = "junkie2631150";
+    const API_KEY = "Yzz4uqi9JCUN0riBvtYRwVBuUMJ6q22Pvwce";
+
+    // .reveal の要素が画面に入ったら .show を付けて表示する
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    async function loadProfile() {
+      const container = document.getElementById('profile-content');
+
+      try {
+        const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/profile`, {
+          headers: { "X-MICROCMS-API-KEY": API_KEY }
+        });
+
+        if (!response.ok) throw new Error('データ取得失敗');
+
+        const data = await response.json();
+        container.classList.remove('loading');
+        container.innerHTML = data.profile || '';
+
+        // 経歴の先頭にある「2021年10月」「2023年10月～2024年11月」を日付として取り出す
+        container.querySelectorAll('li').forEach(li => {
+          const first = li.firstChild;
+          if (!first || first.nodeType !== Node.TEXT_NODE) return;
+
+          const match = first.nodeValue.match(/^\s*(\d{4}年\d{1,2}月(?:\s*[～〜~\-]\s*\d{4}年\d{1,2}月)?)\s*([\s\S]*)$/);
+          if (!match) return;
+
+          const date = document.createElement('span');
+          date.className = 'history-date';
+          date.textContent = match[1];
+          first.nodeValue = match[2];
+          li.insertBefore(date, first);
+        });
+
+        // 見出し・段落・リストの各項目に、スクロールで浮かび上がる動きをつける
+        container.querySelectorAll('h1, h2, h3, p, li').forEach(el => {
+          el.classList.add('reveal');
+          revealObserver.observe(el);
+        });
+
+      } catch (error) {
+        console.error('エラー:', error);
+        container.innerHTML = '<p style="text-align:center;">プロフィールの読み込みに失敗しました。</p>';
+      }
+    }
+
+    loadProfile();
+  </script>
 
 </body>
 </html>
