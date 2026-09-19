@@ -44,6 +44,22 @@
       white-space: pre-wrap;
     }
 
+    /* 終了済みライブ：区切り見出しと、少し薄い見た目 */
+    .past-divider {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2em;
+      letter-spacing: 0.3em;
+      text-align: center;
+      color: #888;
+      margin: 3.5em 0 2em;
+      padding-top: 2em;
+      border-top: 1px solid #444;
+    }
+
+    .live-list.past {
+      opacity: 0.5;
+    }
+
     .loading {
       text-align: center;
       color: #888;
@@ -141,6 +157,57 @@
         .replace(/(開演|START|Start)/g, 'start');
     }
 
+    // ライブのリストを、年月ごとにまとめて画面に追加する（isPast が true なら終了済みの見た目）
+    function renderSection(container, items, isPast) {
+      // 年月グループごとにデータをまとめる（例: "2026年 10月"）。並び順は items の順のまま
+      const groups = {};
+      items.forEach(item => {
+        let yearMonthKey = "その他";
+        if (item.dateInfo.year && item.dateInfo.month) {
+          yearMonthKey = `${item.dateInfo.year}年 ${item.dateInfo.month}月`;
+        }
+
+        if (!groups[yearMonthKey]) {
+          groups[yearMonthKey] = [];
+        }
+        groups[yearMonthKey].push(item);
+      });
+
+      for (const [yearMonth, groupItems] of Object.entries(groups)) {
+        const monthGroupDiv = document.createElement('div');
+        monthGroupDiv.className = 'month-group';
+
+        // 月の見出し
+        const monthTitle = document.createElement('h3');
+        monthTitle.className = 'month-title';
+        monthTitle.textContent = yearMonth;
+        monthGroupDiv.appendChild(monthTitle);
+
+        // その月のライブリスト
+        const ul = document.createElement('ul');
+        ul.className = isPast ? 'live-list past' : 'live-list';
+
+        groupItems.forEach(item => {
+          const dateInfo = item.dateInfo;
+          const formattedDetail = formatDetail(item.detail);
+          const statusMsg = getStatusMessage(dateInfo.year, dateInfo.month, dateInfo.day);
+          const statusHTML = statusMsg ? `<span class="status-msg">${statusMsg}</span>` : '';
+
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span class="date">${dateInfo.formatted}</span>
+            ${statusHTML}
+            <span class="venue">${item.place || ''}</span>
+            <span class="desc">${formattedDetail}</span>
+          `;
+          ul.appendChild(li);
+        });
+
+        monthGroupDiv.appendChild(ul);
+        container.appendChild(monthGroupDiv);
+      }
+    }
+
     async function fetchAllLiveSchedule() {
       const container = document.getElementById('live-schedule-container');
 
@@ -173,63 +240,33 @@
           };
         });
 
-        // 遠い未来のライブが上（日付の降順：10月→9月）に来るように並び替え
-        parsedItems.sort((a, b) => {
-          if (!a.objDate || !b.objDate) return 0;
-          return b.objDate - a.objDate;
-        });
-
-        // 年月グループごとにデータをまとめる（例: "2026年 10月"）
-        const groups = {};
-        parsedItems.forEach(item => {
-          let yearMonthKey = "その他";
-          if (item.dateInfo.year && item.dateInfo.month) {
-            yearMonthKey = `${item.dateInfo.year}年 ${item.dateInfo.month}月`;
-          }
-
-          if (!groups[yearMonthKey]) {
-            groups[yearMonthKey] = [];
-          }
-          groups[yearMonthKey].push(item);
-        });
+        // 開催予定（今日以降）は日程が近い順、終了済みは新しい順に分ける
+        // ※ objDate はその日の23:59:59なので、当日のライブは終わるまで「開催予定」に残る
+        const now = new Date();
+        const upcomingItems = parsedItems
+          .filter(item => item.objDate && item.objDate >= now)
+          .sort((a, b) => a.objDate - b.objDate);
+        const pastItems = parsedItems
+          .filter(item => item.objDate && item.objDate < now)
+          .sort((a, b) => b.objDate - a.objDate);
+        const undatedItems = parsedItems.filter(item => !item.objDate);
 
         // HTMLを生成
         container.innerHTML = '';
         container.classList.remove('loading');
 
-        for (const [yearMonth, items] of Object.entries(groups)) {
-          const monthGroupDiv = document.createElement('div');
-          monthGroupDiv.className = 'month-group';
+        renderSection(container, upcomingItems, false);
 
-          // 月の見出し
-          const monthTitle = document.createElement('h3');
-          monthTitle.className = 'month-title';
-          monthTitle.textContent = yearMonth;
-          monthGroupDiv.appendChild(monthTitle);
-
-          // その月のライブリスト
-          const ul = document.createElement('ul');
-          ul.className = 'live-list';
-
-          items.forEach(item => {
-            const dateInfo = item.dateInfo;
-            const formattedDetail = formatDetail(item.detail);
-            const statusMsg = getStatusMessage(dateInfo.year, dateInfo.month, dateInfo.day);
-            const statusHTML = statusMsg ? `<span class="status-msg">${statusMsg}</span>` : '';
-
-            const li = document.createElement('li');
-            li.innerHTML = `
-              <span class="date">${dateInfo.formatted}</span>
-              ${statusHTML}
-              <span class="venue">${item.place || ''}</span>
-              <span class="desc">${formattedDetail}</span>
-            `;
-            ul.appendChild(li);
-          });
-
-          monthGroupDiv.appendChild(ul);
-          container.appendChild(monthGroupDiv);
+        // 終了済みのライブは区切り線の下にまとめる
+        if (pastItems.length > 0) {
+          const pastDivider = document.createElement('h3');
+          pastDivider.className = 'past-divider';
+          pastDivider.textContent = 'PAST LIVE';
+          container.appendChild(pastDivider);
+          renderSection(container, pastItems, true);
         }
+
+        renderSection(container, undatedItems, false);
 
       } catch (error) {
         console.error('エラー:', error);
