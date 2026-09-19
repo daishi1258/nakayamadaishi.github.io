@@ -268,12 +268,31 @@ section,
   background-position: center 38%;
 }
 
+/* 背景動画：セクション全体に敷き詰める（暗いカバーと文字は、この上に表示される） */
+.profile-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  z-index: 0;
+}
+
+/* 動画・写真の上にかける暗いカバー（数字を小さくすると明るく見える） */
 .profile-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
+}
+
+/* 動きを減らす設定のOSでは、動画を止めて写真だけにする */
+@media (prefers-reduced-motion: reduce) {
+  .profile-bg-video {
+    display: none;
+  }
 }
 
 .profile-overlay {
@@ -501,7 +520,8 @@ strong, b {
    CONTACT / LINKTREE セクション
 ========================================== */
 #contact {
-  background: url('images/links.jpg') no-repeat center center / cover;
+  /* Linktree の画面と同じ、くすんだ緑（中央が明るく、端に向かって少し暗く） */
+  background: radial-gradient(ellipse at center, #56766e 0%, #4a6660 45%, #364d47 100%);
   height: 80vh;
   padding: 6rem 2rem;
   display: flex;
@@ -515,7 +535,7 @@ strong, b {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0);
   z-index: 1;
 }
 
@@ -525,63 +545,102 @@ strong, b {
   margin-top: 0;
 }
 
+/* お問い合わせフォーム：他のセクションに合わせた、細い線と広い文字間のデザイン */
 .contact-form-section {
-  background-color: #111111;
-  padding: 60px 20px;
+  background-color: #0d0d0d;
+  padding: 6rem 1.5rem;
   text-align: center;
   border-top: 1px solid #222222;
 }
 
+.contact-form-section .form-lead {
+  margin-bottom: 3rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: #999999;
+}
+
 .contact-form {
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto;
   text-align: left;
 }
 
 .contact-form label {
   display: block;
-  margin: 20px 0 8px;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  color: #cccccc;
+  margin: 2.2rem 0 0.2rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #ffffff;
 }
 
+/* 英字ラベルの横に添える、小さな日本語 */
+.contact-form label small {
+  margin-left: 1em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #888888;
+}
+
+/* 入力欄：枠をなくして、下線だけにする */
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #333333;
-  border-radius: 0px;
-  font-size: 1rem;
-  background-color: #1a1a1a;
+  padding: 0.7rem 0;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0;
+  background-color: transparent;
   color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
   transition: border-color 0.3s ease;
+}
+
+.contact-form textarea {
+  min-height: 7rem;
+  line-height: 1.7;
+  resize: vertical;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 
+/* ブラウザの自動入力で、入力欄が白や黄色にならないようにする */
+.contact-form input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #0d0d0d inset;
+  -webkit-text-fill-color: #ffffff;
+  caret-color: #ffffff;
+}
+
+/* 送信ボタン：MORE INFORMATION などと同じ、白い枠のボタン */
 .contact-form button {
-  margin-top: 25px;
-  padding: 12px 35px;
-  background-color: #ffffff;
-  color: #0d0d0d;
+  display: block;
+  margin: 3rem auto 0;
+  padding: 0.85rem 3rem;
+  background: transparent;
+  color: #ffffff;
   border: 1px solid #ffffff;
-  border-radius: 0px;
+  border-radius: 0;
   font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
-  letter-spacing: 0.15em;
   font-weight: 600;
+  letter-spacing: 0.2em;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .contact-form button:hover {
-  background-color: transparent;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #0d0d0d;
+  transform: translateY(-2px);
 }
 
 .back-to-top {

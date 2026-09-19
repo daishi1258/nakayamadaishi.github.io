@@ -72,8 +72,8 @@
   </section>
 
 
-  <!-- ▼▼▼ 【仮置き】動画（音なし自動再生・ループ）ここから ▼▼▼
-       消すときは、この「ここから」〜「ここまで」の間をまるごと削除してください -->
+  <!-- 【動画セクション】音なし自動再生・ループ（YouTube「Squall」MV）
+       動画を変えるときは、下の iframe の src にある動画ID（ZP_Ghxy0H34 が2か所）を書き換える -->
   <style>
     .short-section {
       padding: 4rem 1rem;
@@ -114,13 +114,12 @@
   <section id="short" class="section short-section">
     <div class="short-frame">
       <iframe
-        src="https://www.youtube.com/embed/ZP_Ghxy0H34?autoplay=1&mute=1&loop=1&playlist=ZP_Ghxy0H34&controls=0&playsinline=1&rel=0"
+        src="https://www.youtube.com/embed/ZP_Ghxy0H34?autoplay=1&mute=1&loop=1&playlist=ZP_Ghxy0H34&controls=0&playsinline=1&rel=0&cc_load_policy=0&iv_load_policy=3&disablekb=1&modestbranding=1"
         title="Squall music video"
         allow="autoplay; encrypted-media"
         allowfullscreen></iframe>
     </div>
   </section>
-  <!-- ▲▲▲ 【仮置き】動画 ここまで ▲▲▲ -->
 
 
   <!-- 【MOVIEセクション】動画一覧のコーナー -->
@@ -159,6 +158,11 @@
 
   <!-- 【PROFILEセクション】プロフィール概要コーナー -->
   <section id="profile" class="profile-section fade-in-left">
+    <!-- 背景動画（音なし・自動再生・ループ）。読み込み前や再生できない環境では、写真が表示される -->
+    <video class="profile-bg-video" autoplay muted loop playsinline preload="auto" poster="images/profile.jpg" aria-hidden="true">
+      <source src="videos/profile-bg.mp4" type="video/mp4">
+    </video>
+
     <div class="profile-overlay">
       <h2 class="profile-heading">
         <span class="label">ABOUT</span><br />
@@ -179,20 +183,21 @@
 
 
   <!-- 【お問い合わせフォーム】メッセージ送信エリア -->
-  <section id="contact-form" class="section contact-form-section">
-    <h2>お問い合わせフォーム</h2>
+  <section id="contact-form" class="section contact-form-section fade-in-left">
+    <h2>CONTACT</h2>
+    <p class="form-lead">お問い合わせ</p>
 
     <form action="https://formspree.io/f/mjkrorgr" method="POST" class="contact-form">
-      <label for="name">お名前</label>
+      <label for="name">NAME<small>お名前</small></label>
       <input type="text" id="name" name="name" required>
 
-      <label for="email">メールアドレス</label>
+      <label for="email">EMAIL<small>メールアドレス</small></label>
       <input type="email" id="email" name="email" required>
 
-      <label for="message">メッセージ</label>
+      <label for="message">MESSAGE<small>メッセージ</small></label>
       <textarea id="message" name="message" rows="5" required></textarea>
 
-      <button type="submit">送信する</button>
+      <button type="submit">SEND</button>
     </form>
   </section>
 
