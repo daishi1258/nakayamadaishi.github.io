@@ -1,93 +1,133 @@
-/* 全体のリセットと基本設定 */
+/* ==========================================
+   全体のリセットと基本設定（ダークモード）
+========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+html, body {
+  background-color: #0d0d0d !important;
+  color: #ffffff;
+  font-family: 'Cormorant Garamond', 'Helvetica Neue', Helvetica, Arial, serif;
   line-height: 1.6;
-  color: #000;
-  background-color: #fff;
-  font-family: 'Cormorant Garamond', serif;
-
 }
 
-/* ナビゲーションバー */
+/* ==========================================
+   ナビゲーションバー
+========================================== */
 .navbar {
   width: 100%;
-  background: #fff;
+  background: rgba(13, 13, 13, 0.9);
   padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
   text-align: center;
+  border-bottom: 1px solid #222222;
+  backdrop-filter: blur(5px);
 }
 
 .navbar nav a {
   margin: 0 1.5rem;
   text-decoration: none;
-  font-weight: bold;
-  color: #000;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.15em;
+  transition: opacity 0.3s ease;
 }
 
 .navbar nav a:hover {
-  text-decoration: underline;
+  opacity: 0.6;
+  text-decoration: none;
 }
 
-/* ファーストビュー */
+/* ==========================================
+   ファーストビュー（HERO）
+========================================== */
 .hero {
-  width: 100%;
-  height: 100vh;
-  background: url('images/hero.JPG') no-repeat center center/cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative !important;
+  height: 100vh !important;
+  background: url('images/hero.JPG') no-repeat center center / cover !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: hidden !important;
+  animation: fadeInHero 1.5s ease-in-out forwards;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(13,13,13,0.2), rgba(13,13,13,0.8));
+  z-index: 1;
 }
 
 .hero-logo {
-  max-width: 80%;
-  height: auto;
-  margin-top: 230px;
-  animation: slideDownFade 2.5s ease-out forwards;
-  opacity: 0;
-  transform: translateY(-20px);
+  max-width: 70% !important;
+  height: auto !important;
+  display: block !important;
+  z-index: 2 !important;
+  animation: fadeInHero 1.5s ease-in-out forwards;
+  animation-delay: 0.3s;
 }
 
-@keyframes slideDownFade {
-  0% {
+@keyframes fadeInHero {
+  from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: scale(1.03);
   }
-  100% {
+  to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
   }
 }
 
-/* セクション共通 */
+/* ==========================================
+   セクション共通
+========================================== */
 .section {
-  padding: 4rem 1rem;
+  padding: 5rem 1rem;
   text-align: center;
-  background-color: #fff;
+  background-color: #0d0d0d;
 }
 
 .section h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.15em;
+  color: #ffffff;
 }
 
-/* MOVIEセクション */
+/* スクロールアニメーション（fade-in-left） */
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-left.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================
+   MOVIEセクション
+========================================== */
 .movie-section {
-  background: #111;
-  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+  background: #0d0d0d;
+  color: #ffffff;
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  gap: 2rem;
   max-width: 1200px;
   margin: 2rem auto 0 auto;
   padding: 0 1rem;
@@ -102,6 +142,8 @@ body {
   width: 100%;
   padding-bottom: 56.25%;
   height: 0;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid #222;
 }
 
 .video-container iframe {
@@ -113,23 +155,35 @@ body {
   border: none;
 }
 
-/* ボタン共通 */
-.btn {
+/* ==========================================
+   ボタン統一デザイン（白ゴーストボタン）
+========================================== */
+.btn, 
+.linktree-highlight, 
+.btn-back {
   display: inline-block;
-  padding: 0.75rem 1.8rem;
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
-  background-color: #fff;
-  border: 2px solid #000;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: all 0.3s ease;
+  background: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  padding: 0.85rem 2.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: all 0.3s ease !important;
 }
 
-.btn:hover {
-  background-color: #000;
-  color: #fff;
+.btn:hover, 
+.linktree-highlight:hover, 
+.btn-back:hover {
+  background-color: #ffffff !important;
+  color: #0d0d0d !important;
+  transform: translateY(-2px);
 }
 
 .more-button {
@@ -138,30 +192,82 @@ body {
 
 .view-all {
   display: inline-block;
-  margin-top: 1em;
-  font-weight: bold;
+  margin-top: 1.5em;
+  color: #ffffff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 2px;
+  transition: opacity 0.3s ease;
 }
 
-/* PROFILEセクション */
+.view-all:hover {
+  opacity: 0.6;
+}
+
+/* ==========================================
+   PROFILEセクション（画像白枠排除・黒統一・文字純白化）
+========================================== */
+/* プロフィール全体の黒背景化 */
+main,
+section,
+.profile-section,
+.profile-page,
+#profile-page,
+.profile-container,
+.profile-wrapper,
+.profile-text-section,
+.profile-bio,
+.profile-content,
+.bio-section {
+  background-color: #0d0d0d !important;
+  color: #ffffff !important;
+}
+
+/* 画像ラッパー・コンテナ部分の白背景排除 */
+.profile-section,
+.profile-image-container,
+.profile-img-wrapper,
+.profile-pic {
+  background-color: #0d0d0d !important;
+  overflow: hidden;
+}
+
+/* 写真自体の白余白・枠線を消去し黒背景へ密着 */
+.profile-section img,
+.profile-container img,
+.profile-image img,
+.profile-pic img {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: cover !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: #0d0d0d !important;
+  margin: 0 auto !important;
+}
+
 .profile-section {
   position: relative;
   width: 100%;
   min-height: 70vh;
-  background: url('images/pf.jpg') no-repeat center center;
-  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 3rem 1rem;
-  color: white;
+  padding: 4rem 1rem;
 }
 
 .profile-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
 
@@ -171,41 +277,254 @@ body {
   max-width: 800px;
 }
 
-.profile-overlay h2 {
+.profile-heading {
+  font-family: 'Cormorant Garamond', serif;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  animation: fadeInUp 1.2s ease-in-out forwards;
+  opacity: 0;
+}
+
+.profile-heading .label {
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: #cccccc !important;
+  font-weight: 400;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.profile-heading .name {
   font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 8px;
+}
+
+/* プロフィール詳細テキストエリア */
+.profile-text-section,
+.profile-bio,
+.profile-content,
+.bio-section {
+  padding: 4rem 1rem;
+  text-align: center;
+  background-color: #0d0d0d !important;
+  color: #ffffff !important;
+}
+
+.profile-text-section h2,
+.profile-bio h2,
+.profile-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff !important;
+}
+
+/* プロフィール本文・経歴箇条書き（純白 & 黒背景固定） */
+.profile-text-section p,
+.profile-bio p,
+.profile-content p,
+.profile-bio ul,
+.profile-bio li,
+.profile-content ul,
+.profile-content li,
+.bio-list li,
+.profile-page p,
+.profile-page li {
+  max-width: 800px;
+  margin: 0 auto 1.2rem auto;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+/* リストポインターと太字も純白に */
+.profile-bio li::marker,
+.profile-content li::marker,
+.bio-list li::marker {
+  color: #ffffff !important;
+}
+
+.profile-bio strong,
+.profile-content strong,
+.bio-list strong,
+strong, b {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* ==========================================
+   LIVEセクション（洗練カードデザイン）
+========================================== */
+#live {
+  background-color: #0d0d0d;
+  padding: 5rem 1rem;
+}
+
+.next-live-card {
+  background: #181818;
+  border: 1px solid #333333;
+  padding: 2.5rem 1.5rem;
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.next-live-tag {
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  padding: 4px 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.2rem;
+}
+
+.live-date {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.live-status {
+  color: #c9a063;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 1.2rem;
+}
+
+.live-venue {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-family: 'Cormorant Garamond', serif;
   margin-bottom: 1rem;
 }
 
-.profile-overlay p {
-  margin-bottom: 2rem;
-  font-size: 1rem;
+.live-details p {
+  color: #aaaaaa;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin-bottom: 0.3rem;
+}
+
+/* ==========================================
+   LIVE詳細ページ（live.html）の視認性改善
+========================================== */
+.live-list,
+.live-page,
+#live-page {
+  color: #f0f0f0 !important;
+  list-style: none;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* 大枠の「9月」「10月」などの月見出し */
+.live-page h2,
+.live-page h3,
+#live-page h2,
+#live-page h3,
+.month-heading,
+.month-title,
+.month-header,
+.month {
+  color: #ffffff !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em;
+  margin: 2.5rem 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #333333;
+  text-align: left;
+}
+
+.live-list li {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #222222;
+  color: #ffffff !important;
+}
+
+.live-list li span,
+.live-list li p,
+.live-list li div {
+  color: #ffffff !important;
+}
+
+/* 日付・時間・会場名 */
+.live-list .date,
+.live-list .time,
+.live-list .venue,
+.live-date {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+}
+
+/* 詳細や出演者情報などの補足テキスト */
+.live-list .desc,
+.live-list .detail,
+.live-details p {
+  color: #dddddd !important;
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
   line-height: 1.8;
 }
 
-/* プロフィール画像 */
-.profile-image {
-  display: block;
-  max-width: 400px;
-  width: 90%;
-  height: auto;
-  margin: 0 auto 2rem auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* CONTACTセクション */
-.linktree {
-  display: inline-block;
-  margin-top: 1rem;
-  color: #000;
+.live-list a,
+.live-page a {
+  color: #ffffff !important;
   text-decoration: underline;
+  transition: opacity 0.3s ease;
 }
 
-/* CONTACTフォーム */
+.live-list a:hover,
+.live-page a:hover {
+  opacity: 0.6;
+}
+
+/* ==========================================
+   CONTACT / LINKTREE セクション
+========================================== */
+#contact {
+  background: url('images/cont.jpg') no-repeat center center / cover;
+  height: 80vh;
+  padding: 6rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+
+#contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+#contact .linktree-highlight {
+  position: relative;
+  z-index: 2;
+  margin-top: 0;
+}
+
 .contact-form-section {
-  background-color: #f8f8f8;
+  background-color: #111111;
   padding: 60px 20px;
   text-align: center;
+  border-top: 1px solid #222222;
 }
 
 .contact-form {
@@ -216,210 +535,61 @@ body {
 
 .contact-form label {
   display: block;
-  margin: 20px 0 5px;
-  font-weight: bold;
+  margin: 20px 0 8px;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: #cccccc;
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #333333;
+  border-radius: 0px;
   font-size: 1rem;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #ffffff;
 }
 
 .contact-form button {
-  margin-top: 20px;
-  padding: 12px 30px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 6px;
+  margin-top: 25px;
+  padding: 12px 35px;
+  background-color: #ffffff;
+  color: #0d0d0d;
+  border: 1px solid #ffffff;
+  border-radius: 0px;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .contact-form button:hover {
-  background-color: #333;
+  background-color: transparent;
+  color: #ffffff;
 }
 
-/* LIVEセクション */
-.live-list {
-  list-style: none;
-  padding: 0;
-}
-
-.live-list li {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5em;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 1em;
-}
-
-.live-list .date {
-  font-weight: bold;
-  color: #555;
-}
-
-.live-list .venue {
-  font-size: 1em;
-  color: #222;
-}
-
-.live-list .desc {
-  font-size: 0.9em;
-  color: #444;
-}
-
-/* スクロールアニメーション */
-.fade-in-left {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: all 1s ease-out;
-}
-
-.fade-in-left.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-  .navbar nav a {
-    display: block;
-    margin: 0.5rem 0;
-  }
-
-  .hero-logo {
-    max-width: 150%;
-    margin-top: 0;
-  }
-
-  .hero-title {
-    font-size: 2.2rem;
-  }
-
-  .profile-overlay h2 {
-    font-size: 1.5rem;
-  }
-
-  .profile-overlay p {
-    font-size: 0.95rem;
-  }
-
-  .movie-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.hero {
-  position: relative !important;
-  height: 100vh !important;
-  background: url('images/hero.JPG') no-repeat center center / cover !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  overflow: hidden !important;
-}
-
-.hero-logo {
-  max-width: 70% !important;
-  height: auto !important;
-  display: block !important;
-  z-index: 2 !important;
-}
-@keyframes fadeInHero {
-  from {
-    opacity: 0;
-    transform: scale(1.05);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.hero {
-  animation: fadeInHero 1.5s ease-in-out forwards;
-}
-.hero-logo {
-  animation: fadeInHero 1.5s ease-in-out forwards;
-  animation-delay: 0.3s;
-}
-
-
-@media (max-width: 768px) {
-  .hero-logo {
-    max-width: 100% !important;
-    height: auto !important;
-    display: block !important;
-  }
-}
-/* 全画面背景 + ロゴ中央配置 */
-.hero {
-  position: relative;
-  height: 100vh;
-  background: url('images/hero.JPG') no-repeat center center / cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* ロゴ画像スタイル（PC用） */
-.hero-logo {
-  max-width: 70%;
-  height: auto;
-  display: block;
-  transform: translateY(0%);
-  transition: transform 0.5s ease;
-}
-
-/* 📱 スマホ専用調整（768px以下） */
-@media (max-width: 768px) {
-  .hero-logo {
-    max-width: 105% !important;
-    transform: translateY(30%) !important;  /* ←ここが位置調整ポイント */
-  }
-}
-.profile-heading {
-  font-family: 'Helvetica Neue', sans-serif;
+.back-to-top {
   text-align: center;
-  margin-bottom: 2rem;
-  line-height: 1.2;
-  animation: fadeInUp 1.2s ease-in-out forwards;
-  opacity: 0;
+  margin: 4rem auto;
 }
 
-.profile-overlay {
-  text-align: center;
-}
-
-/* 上部の "ABOUT" 部分 */
-.profile-heading .label {
-  font-size: 1rem;
-  letter-spacing: 0.25em;
-  color: #ccc;
-  font-weight: 400;
-  display: inline-block;
-  margin-bottom: 0.5rem;
-}
-
-/* "Nakayama Daishi" の部分 */
-.profile-heading .name {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid #fff;
-  padding-bottom: 5px;
-}
-
-/* フェードアップアニメーション */
+/* ==========================================
+   アニメーション定義
+========================================== */
 @keyframes fadeInUp {
   from {
-    transform: translateY(30px);
+    transform: translateY(20px);
     opacity: 0;
   }
   to {
@@ -427,140 +597,10 @@ body {
     opacity: 1;
   }
 }
-@media (max-width: 768px) {
-  .profile-heading .name {
-    font-size: 1.4rem; /* ← 今は 2rem なので調整 */
-  }
-}
 
-#contact {
-  background: url('images/cont.jpg') no-repeat center center / cover;
-  height: 90vh;
-  padding: 6rem 2rem 6rem; /* 上下の余白しっかりとる */
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  position: relative;
-  text-align: center;
-}
-/* モバイル＆PC 共通デザイン */
-.linktree-highlight {
-  display: inline-block;
-  background: linear-gradient(135deg, #ffefba, #ffffff); /* 明るめのゴールド系 */
-  color: #000;
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding: 1rem 2.2rem;
-  border-radius: 40px;
-  text-decoration: none;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-  transition: all 0.25s ease;
-  max-width: 90vw;
-  width: auto;
-  text-align: center;
-  white-space: nowrap;
-  animation: pulse 3s infinite ease-in-out;
-  position: relative;
-  z-index: 10;
-  margin-top: 2rem; /* 通常の余白 */
-}
-
-/* ホバー効果 */
-.linktree-highlight:hover {
-  transform: scale(1.07);
-  background: linear-gradient(145deg, #fff8cc, #fbeaa0);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
-}
-
-/* アニメーション */
-@keyframes pulse {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.03); }
-  100% { transform: scale(1); }
-}
-/*スマホ用 */
-@media (max-width: 768px) {
-  .linktree-highlight {
-    animation: pulse 3s infinite ease-in-out !important;
-    position: relative;
-    top: -36vh; /* ← 位置を大きく上に持ち上げる */
-    margin-top: 0 !important; /* ← 重複防止 */
-  }
-}
-
-
-
-
-
-@media (min-width: 769px) {
-  .linktree-highlight {
-    position: relative !important;
-    top: -200px 
-    
-  }
-}
-.btn {
-  background: linear-gradient(135deg, #3ca55c, #b5ac49);
-  color: white;
-  border: none;
-  padding: 0.9rem 2rem;
-  border-radius: 50px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  box-shadow: 0 8px 20px rgba(60, 165, 92, 0.3);
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  transform: scale(1.06);
-  background: linear-gradient(135deg, #b5ac49, #3ca55c);
-  box-shadow: 0 10px 30px rgba(60, 165, 92, 0.45);
-}
-
-
-
-
-
-@keyframes pulseGlow {
-  0%   { box-shadow: 0 0 15px rgba(0, 128, 128, 0.4); }
-  50%  { box-shadow: 0 0 30px rgba(0, 128, 255, 0.8); }
-  100% { box-shadow: 0 0 15px rgba(0, 128, 128, 0.4); }
-}
-
-.linktree-highlight {
-  display: inline-block;
-  background: linear-gradient(135deg, #ff6a00, #ee0979); /* オレンジ〜ピンク */
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding: 1rem 2.2rem;
-  border-radius: 40px;
-  text-decoration: none;
-  box-shadow: 0 10px 30px rgba(255, 105, 135, 0.4);
-  transition: all 0.3s ease;
-  max-width: 90vw;
-  width: auto;
-  text-align: center;
-  white-space: nowrap;
-  animation: pulse 3s infinite ease-in-out;
-  position: relative;
-  z-index: 10;
-  margin-top: 2.5rem;
-}
-
-/* ホバー効果 */
-.linktree-highlight:hover {
-  transform: scale(1.07);
-  background: linear-gradient(135deg, #ff9472, #f2709c);
-  box-shadow: 0 15px 40px rgba(255, 120, 150, 0.6);
-}
-
-/* アニメーション定義 */
-@keyframes pulse {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.03); }
-  100% { transform: scale(1); }
-}
+/* ==========================================
+   レスポンシブ対応（スマホ調整）
+========================================== */
 @media (max-width: 768px) {
   .navbar nav {
     display: flex;
@@ -569,74 +609,25 @@ body {
   }
 
   .navbar nav a {
-    display: inline-block; /* ← 横並びにする */
-    margin: 0 1rem;
-    font-size: 0.9rem; /* スマホ用に少し小さめでもOK */
+    display: inline-block;
+    margin: 0.3rem 0.8rem;
+    font-size: 0.85rem;
   }
-}
-.profile-heading .label,
-.profile-heading .name {
-  font-family: 'Cormorant Garamond', serif;
-}
-.full-screen-image {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  display: block;
-}
 
-.profile-text-section {
-  padding: 4rem 1rem;
-  text-align: center;
-  background-color: #fff;
-}
+  .hero-logo {
+    max-width: 100% !important;
+    transform: translateY(20%) !important;
+  }
 
-.profile-text-section h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
+  .profile-heading .name {
+    font-size: 1.4rem;
+  }
 
-.profile-text-section p {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
-@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+
   #contact {
-    background-size: 200%; /* cover より少し小さく見せる */
-    background-repeat: no-repeat;
-    background-position: center top;
-     background-color: #000; /* 余白を黒くする */
-    background-blend-mode: normal;
-    
+    height: 60vh;
   }
- 
-
-}
-
-
-.back-to-top {
-  text-align: center;
-  margin: 3rem auto 4rem;
-}
-
-.btn-back {
-  display: inline-block;
-  background: linear-gradient(135deg, #ff6a00, #ee0979); /* インスタ風オレンジピンク */
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: bold;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  text-decoration: none;
-  box-shadow: 0 10px 30px rgba(255, 105, 135, 0.4);
-  transition: all 0.3s ease;
-}
-
-.btn-back:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #ff9472, #f2709c);
-  box-shadow: 0 12px 40px rgba(255, 120, 150, 0.5);
 }

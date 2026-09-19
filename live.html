@@ -3,97 +3,242 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Information | NakayamaDaishi</title>
+  <title>LIVE SCHEDULE | NakayamaDaishi</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      color: #222;
-    }
-
-    header {
-      padding: 1em;
-      text-align: center;
-      background-color: #f9f9f9;
-      border-bottom: 1px solid #ddd;
-    }
-
-    section {
-      padding: 2em 1em;
-      max-width: 960px;
+    .live-page-container {
+      max-width: 800px;
       margin: 0 auto;
+      padding: 2em 1em;
     }
 
-    .live-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .month-group {
+      margin-bottom: 2.5em;
     }
 
-    .live-list li {
-      border-bottom: 1px solid #ccc;
-      padding: 1em 0;
-    }
-
-    .date {
+    .month-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8em;
       font-weight: bold;
-      color: #555;
+      color: #333;
+      border-bottom: 2px solid #333;
+      padding-bottom: 0.2em;
+      margin-bottom: 1em;
+      text-align: left;
     }
 
-    .venue {
+    .status-msg {
       display: block;
-      font-size: 1em;
-      color: #222;
-      margin: 0.2em 0;
+      color: #d9534f;
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-bottom: 0.4em;
     }
 
     .desc {
+      display: block;
       font-size: 0.9em;
-      color: #444;
+      color: #555;
+      line-height: 1.6;
+      white-space: pre-wrap;
     }
 
-    footer {
-      padding: 1em;
+    .loading {
       text-align: center;
-      background-color: #f9f9f9;
-      border-top: 1px solid #ddd;
-      font-size: 0.9em;
-      color: #777;
-    }
-
-    a.back-home {
-      display: inline-block;
-      margin-top: 2em;
-      text-decoration: underline;
-      font-weight: bold;
-      color: #333;
+      color: #888;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Live Information</h1>
+  <!-- ナビゲーション -->
+  <header class="navbar">
+    <nav>
+      <a href="index.html#movie">MOVIE</a>
+      <a href="index.html#profile">PROFILE</a>
+      <a href="index.html#live">LIVE</a>
+      <a href="index.html#contact">CONTACT</a>
+    </nav>
   </header>
 
-  <section>
-    <ul class="live-list">
-       <li>
-      <span class="date">2025.02.04.tue</span>
-      <span class="venue">吉祥寺STAR PINE'S CAFE</span>
-      <span class="desc">w/飛遥,ナルセユウキ</span>
-    </li>
-    <li>
-      <span class="date">2024.11.30.SAT</span>
-      <span class="venue">吉祥寺STAR PINE'S CAFE</span>
-      <span class="desc">「景色と情景」最終章</span>
-    </li>
-    <li>
-      <span class="date">2024.11.08.FRI</span>
-      <span class="venue">新宿SACT!</span>
-      <span class="desc">w/TAMON,たんげまこと,荒牧リョウ</span>
-    </li>
-      <li>
+  <div class="live-page-container">
+    <h2 style="text-align: center; margin-bottom: 1.5em;">LIVE SCHEDULE</h2>
+
+    <!-- 年月ごとにグループ分けされてここに出力されます -->
+    <div id="live-schedule-container" class="loading">ライブ情報を読み込み中...</div>
+
+    <div style="text-align: center; margin-top: 2em;">
+      <a href="index.html" class="btn">TOPへ戻る</a>
+    </div>
+  </div>
+
+  <script>
+    const SERVICE_DOMAIN = "junkie2631150"; 
+    const API_KEY = "Yzz4uqi9JCUN0riBvtYRwVBuUMJ6q22Pvwce"; 
+
+    function toHalfWidth(str) {
+      if (!str) return '';
+      return str
+        .replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
+        .replace(/[Ａ-Ｚａ-ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
+        .replace(/：/g, ':')
+        .replace(/／/g, '/')
+        .replace(/￥/g, '¥');
+    }
+
+    function formatDate(rawDateStr) {
+      if (!rawDateStr) return { formatted: '', year: 0, month: 0, day: 0 };
+
+      let normalized = toHalfWidth(rawDateStr)
+        .replace(/[年月日\/\-]/g, '.')
+        .replace(/\.+/g, '.')
+        .trim();
+
+      const match = normalized.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+
+      if (match) {
+        const year = parseInt(match[1]);
+        const month = parseInt(match[2]);
+        const day = parseInt(match[3]);
+
+        const monthStr = String(month).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+
+        const dateObj = new Date(year, month - 1, day);
+        const dayNamesJa = ['日', '月', '火', '水', '木', '金', '土'];
+        const dayOfWeek = dayNamesJa[dateObj.getDay()];
+
+        return {
+          formatted: `${year}.${monthStr}.${dayStr} (${dayOfWeek})`,
+          year, month, day
+        };
+      }
+
+      return { formatted: toHalfWidth(rawDateStr), year: 0, month: 0, day: 0 };
+    }
+
+    function getStatusMessage(year, month, day) {
+      if (!year || !month || !day) return '';
+
+      const now = new Date();
+      const liveDayStart = new Date(year, month - 1, day, 0, 0, 0);
+      const liveDayCutoff = new Date(year, month - 1, day, 15, 0, 0);
+      const liveDayEnd = new Date(year, month - 1, day, 23, 59, 59);
+
+      if (now < liveDayStart) return '前売り予約受付中';
+      if (now >= liveDayStart && now < liveDayCutoff) return '当日15時までなら前売り予約受付中';
+      if (now >= liveDayCutoff && now <= liveDayEnd) return '飛び込みOK';
+      return '';
+    }
+
+    function formatDetail(rawDetailStr) {
+      if (!rawDetailStr) return '';
+      let text = toHalfWidth(rawDetailStr);
+      return text
+        .replace(/(開場|OPEN|Open)/g, 'open')
+        .replace(/(開演|START|Start)/g, 'start');
+    }
+
+    async function fetchAllLiveSchedule() {
+      const container = document.getElementById('live-schedule-container');
+
+      try {
+        const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/live?limit=100`, {
+          headers: { "X-MICROCMS-API-KEY": API_KEY }
+        });
+
+        if (!response.ok) throw new Error('データ取得失敗');
+
+        const data = await response.json();
+        let liveItems = data.contents;
+
+        if (liveItems.length === 0) {
+          container.innerHTML = '<p style="text-align:center;">現在予定されているライブはありません。</p>';
+          return;
+        }
+
+        // 各アイテムの日付を解析
+        const parsedItems = liveItems.map(item => {
+          const dateInfo = formatDate(item.date || item.publishedAt);
+          let objDate = null;
+          if (dateInfo.year && dateInfo.month && dateInfo.day) {
+            objDate = new Date(dateInfo.year, dateInfo.month - 1, dateInfo.day, 23, 59, 59);
+          }
+          return {
+            ...item,
+            dateInfo,
+            objDate
+          };
+        });
+
+        // 遠い未来のライブが上（日付の降順：10月→9月）に来るように並び替え
+        parsedItems.sort((a, b) => {
+          if (!a.objDate || !b.objDate) return 0;
+          return b.objDate - a.objDate;
+        });
+
+        // 年月グループごとにデータをまとめる（例: "2026年 10月"）
+        const groups = {};
+        parsedItems.forEach(item => {
+          let yearMonthKey = "その他";
+          if (item.dateInfo.year && item.dateInfo.month) {
+            yearMonthKey = `${item.dateInfo.year}年 ${item.dateInfo.month}月`;
+          }
+
+          if (!groups[yearMonthKey]) {
+            groups[yearMonthKey] = [];
+          }
+          groups[yearMonthKey].push(item);
+        });
+
+        // HTMLを生成
+        container.innerHTML = '';
+        container.classList.remove('loading');
+
+        for (const [yearMonth, items] of Object.entries(groups)) {
+          const monthGroupDiv = document.createElement('div');
+          monthGroupDiv.className = 'month-group';
+
+          // 月の見出し
+          const monthTitle = document.createElement('h3');
+          monthTitle.className = 'month-title';
+          monthTitle.textContent = yearMonth;
+          monthGroupDiv.appendChild(monthTitle);
+
+          // その月のライブリスト
+          const ul = document.createElement('ul');
+          ul.className = 'live-list';
+
+          items.forEach(item => {
+            const dateInfo = item.dateInfo;
+            const formattedDetail = formatDetail(item.detail);
+            const statusMsg = getStatusMessage(dateInfo.year, dateInfo.month, dateInfo.day);
+            const statusHTML = statusMsg ? `<span class="status-msg">${statusMsg}</span>` : '';
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <span class="date">${dateInfo.formatted}</span>
+              ${statusHTML}
+              <span class="venue">${item.place || ''}</span>
+              <span class="desc">${formattedDetail}</span>
+            `;
+            ul.appendChild(li);
+          });
+
+          monthGroupDiv.appendChild(ul);
+          container.appendChild(monthGroupDiv);
+        }
+
+      } catch (error) {
+        console.error('エラー:', error);
+        container.innerHTML = '<p style="text-align:center;">ライブ情報の読み込みに失敗しました。</p>';
+      }
+    }
+
+    fetchAllLiveSchedule();
+  </script>
+
+</body>
+</html>

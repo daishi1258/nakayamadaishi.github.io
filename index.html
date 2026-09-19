@@ -1,16 +1,36 @@
+<!-- ① HTML5の標準規格で書くという宣言 -->
 <!DOCTYPE html>
+
+<!-- ② ここからHTMLコード開始（言語は日本語に設定） -->
 <html lang="ja">
+
+<!-- ==========================================
+  【headタグ】ブラウザへの「設定・指示」を入れる場所
+=========================================== -->
 <head>
+  <!-- 文字化けを防ぐための設定（UTF-8という文字コードを指定） -->
   <meta charset="UTF-8" />
+
+  <!-- スマホやPCなど、画面サイズに合わせて綺麗に表示（レスポンシブ対応）させる設定 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ブラウザのタブや検索結果に表示されるサイトのタイトル -->
   <title>NakayamaDaishi | Official Site</title>
+
+  <!-- 外見（デザイン・レイアウト）を整えるCSSファイルを読み込む -->
   <link rel="stylesheet" href="style.css" />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
 
+  <!-- Google Fonts（おしゃれなフォント）をネットから読み込む -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
 
+</head>
+
+<!-- ==========================================
+  【bodyタグ】実際にブラウザの「画面上に表示される内容」を入れる場所
+=========================================== -->
 <body>
 
-  <!-- ナビゲーション -->
+  <!-- ナビゲーションバー（画面上部のメニューリンク） -->
   <header class="navbar">
     <nav>
       <a href="#movie">MOVIE</a>
@@ -20,85 +40,97 @@
     </nav>
   </header>
 
- <!-- ファーストビュー -->
-<section class="hero">
-  <img src="images/moji.png" alt="NakayamaDaishi" class="hero-logo" />
-</section>
+
+  <!-- ファーストビュー（サイトを開いた時に最初に見えるメイン画像領域） -->
+  <section class="hero">
+    <img src="images/moji.png" alt="NakayamaDaishi" class="hero-logo" />
+  </section>
 
 
-  <!-- MOVIE -->
+  <!-- 【MOVIEセクション】動画一覧のコーナー -->
   <section id="movie" class="section movie-section">
     <h2>MOVIE</h2>
+
     <div class="movie-grid">
+      <!-- 1つ目の動画枠 -->
       <div class="movie-box fade-in-left">
         <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/FY0knjHxqX8" frameborder="0" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/FY0knjHxqX8" title="YouTube video 1" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
+
+      <!-- 2つ目の動画枠 -->
       <div class="movie-box fade-in-left">
         <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/CY9EIVo3M5g" frameborder="0" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/CY9EIVo3M5g" title="YouTube video 2" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
+
+      <!-- 3つ目の動画枠 -->
       <div class="movie-box fade-in-left">
         <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/fuOGROAnBGg" frameborder="0" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/fuOGROAnBGg" title="YouTube video 3" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
     </div>
+
+    <!-- YouTubeチャンネルへのリンクボタン -->
     <div class="more-button">
-      <a href="https://www.youtube.com/@daishinakayama1220" class="btn">MORE VIDEOS</a>
+      <a href="https://www.youtube.com/@daishinakayama1220" class="btn" target="_blank" rel="noopener noreferrer">MORE VIDEOS</a>
     </div>
   </section>
 
-  <!-- PROFILE -->
-<!-- PROFILE -->
-<section id="profile" class="profile-section fade-in-left">
-  <div class="profile-overlay">
-    <h2 class="profile-heading">
-      <span class="label">ABOUT</span><br />
-      <span class="name">Nakayama Daishi</span>
-    </h2>
-    <a href="profile.html" class="btn">MORE INFORMATION</a>
-  </div>
-</section>
+
+  <!-- 【PROFILEセクション】プロフィール概要コーナー -->
+  <section id="profile" class="profile-section fade-in-left">
+    <div class="profile-overlay">
+      <h2 class="profile-heading">
+        <span class="label">ABOUT</span><br />
+        <span class="name">Nakayama Daishi</span>
+      </h2>
+      <!-- 詳細プロフィールページ（profile.html）へ移動するボタン -->
+      <a href="profile.html" class="btn">MORE INFORMATION</a>
+    </div>
+  </section>
 
 
-  <!-- LIVE -->
+  <!-- 【LIVEセクション】ライブ日程のリストコーナー（洗練ダークカードデザイン） -->
   <section id="live" class="section">
     <h2>LIVE</h2>
-    <ul class="live-list">
-      <li>
-        <span class="date">2025.02.04.tue</span>
-        <span class="venue">吉祥寺STAR PINE'S CAFE</span>
-        <span class="desc">w/飛遥,ナルセユウキ</span>
-      </li>
-      <li>
-        <span class="date">2024.11.30.SAT</span>
-        <span class="venue">吉祥寺STAR PINE'S CAFE</span>
-        <span class="desc">「景色と情景」最終章</span>
-      </li>
-      <li>
-        <span class="date">2024.11.08.FRI</span>
-        <span class="venue">新宿SACT!</span>
-        <span class="desc">w/TAMON,たんげまこと,荒牧リョウ</span>
-      </li>
-    </ul>
-    <a href="live.html" class="btn view-all">View All</a>
+
+    <!-- NEXT LIVE カード -->
+    <div class="next-live-card">
+      <div class="next-live-tag">NEXT LIVE</div>
+      <div class="live-date">2026.09.25 (金)</div>
+      <div class="live-status">前売り予約受付中</div>
+      <div class="live-venue">吉祥寺Planet C</div>
+      <div class="live-details">
+        <p>としぞー寿司presents 「お寿司と音楽」</p>
+        <p>open 18:30 / start 19:00</p>
+        <p>Music charge ¥2,500 別途1drink ¥600 or 1drinkおつまみ付き ¥1,000</p>
+        <p>出演: モリカワユウタ、鈴木モモ、8角K、景色と情景</p>
+      </div>
+    </div>
+
+    <!-- 過去や今後の全ライブ情報ページ（live.html）へ移動するボタン -->
+    <div style="margin-top: 2.5rem;">
+      <a href="live.html" class="btn view-all">View All</a>
+    </div>
   </section>
 
-<!-- CONTACT -->
-<section id="contact" class="contact-section">
-  <a href="https://linktr.ee/Daishi_1258" class="linktree-highlight" target="_blank">
-    🔗 ALL LINKS
-  </a>
-</section>
+
+  <!-- 【CONTACTセクション】各SNSやまとめリンク（Linktree）への案内 -->
+  <section id="contact" class="contact-section">
+    <a href="https://linktr.ee/Daishi_1258" class="linktree-highlight" target="_blank" rel="noopener noreferrer">
+      🔗 ALL LINKS
+    </a>
+  </section>
 
 
-
-  <!-- お問い合わせフォーム -->
+  <!-- 【お問い合わせフォーム】メッセージ送信エリア -->
   <section id="contact-form" class="section contact-form-section">
     <h2>お問い合わせフォーム</h2>
+
     <form action="https://formspree.io/f/mjkrorgr" method="POST" class="contact-form">
       <label for="name">お名前</label>
       <input type="text" id="name" name="name" required>
@@ -113,9 +145,13 @@
     </form>
   </section>
 
-  <!-- アニメーション用スクリプト -->
+
+  <!-- ==========================================
+    【JavaScript】動きやアニメーションをつけるプログラム
+  =========================================== -->
   <script>
     const targets = document.querySelectorAll('.fade-in-left');
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
