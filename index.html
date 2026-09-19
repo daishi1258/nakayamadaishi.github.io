@@ -33,9 +33,9 @@
   <!-- ナビゲーションバー（画面上部のメニューリンク） -->
   <header class="navbar">
     <nav>
+      <a href="live.html">LIVE</a>
       <a href="#movie">MOVIE</a>
       <a href="profile.html">PROFILE</a>
-      <a href="live.html">LIVE</a>
       <a href="#contact">CONTACT</a>
     </nav>
   </header>
@@ -45,6 +45,82 @@
   <section class="hero">
     <img src="images/moji.png" alt="NakayamaDaishi" class="hero-logo" />
   </section>
+
+
+  <!-- 【LIVEセクション】ライブ日程のリストコーナー（洗練ダークカードデザイン） -->
+  <section id="live" class="section">
+    <h2>LIVE</h2>
+
+    <!-- NEXT LIVE カード -->
+    <div class="next-live-card">
+      <div class="next-live-tag">NEXT LIVE</div>
+      <div class="live-date">2026.09.25 (金)</div>
+      <div class="live-status">前売り予約受付中</div>
+      <div class="live-venue">吉祥寺Planet C</div>
+      <div class="live-details">
+        <p>としぞー寿司presents 「お寿司と音楽」</p>
+        <p>open 18:30 / start 19:00</p>
+        <p>Music charge ¥2,500 別途1drink ¥600 or 1drinkおつまみ付き ¥1,000</p>
+        <p>出演: モリカワユウタ、鈴木モモ、8角K、景色と情景</p>
+      </div>
+    </div>
+
+    <!-- 過去や今後の全ライブ情報ページ（live.html）へ移動するボタン -->
+    <div style="margin-top: 2.5rem;">
+      <a href="live.html" class="btn view-all">View All</a>
+    </div>
+  </section>
+
+
+  <!-- ▼▼▼ 【仮置き】動画（音なし自動再生・ループ）ここから ▼▼▼
+       消すときは、この「ここから」〜「ここまで」の間をまるごと削除してください -->
+  <style>
+    .short-section {
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .short-frame {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 16 / 9;
+      margin: 0 auto;
+    }
+    .short-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    /* スマホ：画面の端まで広げ、正方形の枠に動画を拡大して表示（左右は少し切れる） */
+    @media (max-width: 768px) {
+      .short-section {
+        padding: 2rem 0;
+      }
+      .short-frame {
+        max-width: none;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        overflow: hidden;
+      }
+      .short-frame iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 177.78%;
+        height: 100%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  </style>
+  <section id="short" class="section short-section">
+    <div class="short-frame">
+      <iframe
+        src="https://www.youtube.com/embed/ZP_Ghxy0H34?autoplay=1&mute=1&loop=1&playlist=ZP_Ghxy0H34&controls=0&playsinline=1&rel=0"
+        title="Squall music video"
+        allow="autoplay; encrypted-media"
+        allowfullscreen></iframe>
+    </div>
+  </section>
+  <!-- ▲▲▲ 【仮置き】動画 ここまで ▲▲▲ -->
 
 
   <!-- 【MOVIEセクション】動画一覧のコーナー -->
@@ -90,31 +166,6 @@
       </h2>
       <!-- 詳細プロフィールページ（profile.html）へ移動するボタン -->
       <a href="profile.html" class="btn">MORE INFORMATION</a>
-    </div>
-  </section>
-
-
-  <!-- 【LIVEセクション】ライブ日程のリストコーナー（洗練ダークカードデザイン） -->
-  <section id="live" class="section">
-    <h2>LIVE</h2>
-
-    <!-- NEXT LIVE カード -->
-    <div class="next-live-card">
-      <div class="next-live-tag">NEXT LIVE</div>
-      <div class="live-date">2026.09.25 (金)</div>
-      <div class="live-status">前売り予約受付中</div>
-      <div class="live-venue">吉祥寺Planet C</div>
-      <div class="live-details">
-        <p>としぞー寿司presents 「お寿司と音楽」</p>
-        <p>open 18:30 / start 19:00</p>
-        <p>Music charge ¥2,500 別途1drink ¥600 or 1drinkおつまみ付き ¥1,000</p>
-        <p>出演: モリカワユウタ、鈴木モモ、8角K、景色と情景</p>
-      </div>
-    </div>
-
-    <!-- 過去や今後の全ライブ情報ページ（live.html）へ移動するボタン -->
-    <div style="margin-top: 2.5rem;">
-      <a href="live.html" class="btn view-all">View All</a>
     </div>
   </section>
 
