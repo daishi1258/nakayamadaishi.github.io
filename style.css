@@ -19,6 +19,9 @@ html, body {
 ========================================== */
 .navbar {
   width: 100%;
+  /* ページごとにフォントや行の高さを変えていても、ナビだけは全ページで同じ見た目にする */
+  font-family: 'Cormorant Garamond', 'Helvetica Neue', Helvetica, Arial, serif;
+  line-height: 1.6;
   background: rgba(13, 13, 13, 0.9);
   padding: 1rem 0;
   position: sticky;
@@ -41,6 +44,45 @@ html, body {
 .navbar nav a:hover {
   opacity: 0.6;
   text-decoration: none;
+}
+
+/* 左上の名前ロゴ（トップ写真と同じ書体の画像）。クリックでトップページへ戻る */
+.nav-logo {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-logo:hover {
+  opacity: 0.6;
+}
+
+.nav-logo img {
+  display: block;
+  height: 46px;
+  width: auto;
+}
+
+/* 画面が狭いときは、ロゴがメニューと重ならないよう、ロゴを上の段に、メニューを下の段にする */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0.6rem 0 0.7rem;
+  }
+
+  .nav-logo {
+    position: static;
+    display: block;
+    transform: none;
+    text-align: left;
+    padding: 0 1rem 0.3rem;
+  }
+
+  .nav-logo img {
+    height: 32px;
+  }
 }
 
 /* ==========================================
@@ -112,6 +154,58 @@ html, body {
 .fade-in-left.show {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* スクロールアニメーション（LIVE用。横からだけにならないよう、要素ごとに動きを変える） */
+/* 見出し：文字の間隔が、ぎゅっと縮みながら現れる */
+.section h2.reveal-track {
+  opacity: 0;
+  letter-spacing: 0.6em;
+  transition: opacity 1s ease, letter-spacing 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.section h2.reveal-track.show {
+  opacity: 1;
+  letter-spacing: 0.15em;
+}
+
+/* カード：下から、少し拡大しながら浮かび上がる */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px) scale(0.97);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal-up.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* ボタン：小さい状態から、少し弾んで現れる */
+.reveal-zoom {
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal-zoom.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 動きを減らす設定のOSでは、動かさずに表示する */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-track,
+  .reveal-up,
+  .reveal-zoom {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .section h2.reveal-track {
+    letter-spacing: 0.15em;
+  }
 }
 
 /* ==========================================
@@ -522,11 +616,9 @@ strong, b {
 #contact {
   /* Linktree の画面と同じ、くすんだ緑（中央が明るく、端に向かって少し暗く） */
   background: radial-gradient(ellipse at center, #56766e 0%, #4a6660 45%, #364d47 100%);
-  height: 80vh;
-  padding: 6rem 2rem;
+  padding: 5rem 1.5rem 5.5rem;
   display: flex;
   justify-content: center;
-  align-items: center;
   position: relative;
   text-align: center;
 }
@@ -539,10 +631,36 @@ strong, b {
   z-index: 1;
 }
 
+/* リンク集のイメージ画像と、ALL LINKS ボタン（上の薄いカバーより前に出して、クリックできるようにする） */
+.links-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.links-card {
+  display: block;
+  width: min(340px, 86vw);
+}
+
+.links-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.4s ease;
+}
+
+.links-card:hover img {
+  transform: translateY(-4px);
+}
+
 #contact .linktree-highlight {
   position: relative;
   z-index: 2;
-  margin-top: 0;
+  /* 画像の下側は透けて消える作りなので、その下に、少しだけ間をあけてボタンを置く */
+  margin-top: 0.75rem;
 }
 
 /* お問い合わせフォーム：他のセクションに合わせた、細い線と広い文字間のデザイン */
@@ -689,9 +807,5 @@ strong, b {
 
   .movie-grid {
     grid-template-columns: 1fr;
-  }
-
-  #contact {
-    height: 60vh;
   }
 }

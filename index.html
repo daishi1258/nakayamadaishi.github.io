@@ -32,6 +32,10 @@
 
   <!-- ナビゲーションバー（画面上部のメニューリンク） -->
   <header class="navbar">
+    <!-- 左上の名前ロゴ（クリックでトップページへ戻る） -->
+    <a href="index.html" class="nav-logo" aria-label="トップページへ戻る">
+      <img src="images/logo-nav.png" alt="Nakayama Daishi" />
+    </a>
     <nav>
       <a href="live.html">LIVE</a>
       <a href="#movie">MOVIE</a>
@@ -49,10 +53,12 @@
 
   <!-- 【LIVEセクション】ライブ日程のリストコーナー（洗練ダークカードデザイン） -->
   <section id="live" class="section">
-    <h2>LIVE</h2>
+    <!-- スクロールで現れる動き。要素ごとに動きを変える（reveal-track：文字間が縮む／reveal-up：下から浮かぶ／reveal-zoom：弾んで現れる）。
+         transition-delay で、見出し→カード→ボタンの順に、少しずつ遅らせる -->
+    <h2 class="reveal-track">LIVE</h2>
 
     <!-- NEXT LIVE カード -->
-    <div class="next-live-card">
+    <div class="next-live-card reveal-up" style="transition-delay: 0.25s;">
       <div class="next-live-tag">NEXT LIVE</div>
       <div class="live-date">2026.09.25 (金)</div>
       <div class="live-status">前売り予約受付中</div>
@@ -66,7 +72,7 @@
     </div>
 
     <!-- 過去や今後の全ライブ情報ページ（live.html）へ移動するボタン -->
-    <div style="margin-top: 2.5rem;">
+    <div class="reveal-zoom" style="margin-top: 2.5rem; transition-delay: 0.5s;">
       <a href="live.html" class="btn view-all">View All</a>
     </div>
   </section>
@@ -176,9 +182,17 @@
 
   <!-- 【CONTACTセクション】各SNSやまとめリンク（Linktree）への案内 -->
   <section id="contact" class="contact-section">
-    <a href="https://linktr.ee/Daishi_1258" class="linktree-highlight" target="_blank" rel="noopener noreferrer">
-      🔗 ALL LINKS
-    </a>
+    <div class="links-inner reveal-up">
+      <!-- リンク集のイメージ画像（クリックで Linktree へ）。画像の中身は、Linktree の内容を元にした静止画なので、
+           リンクの名前などを変えたときは、画像も作り直す。読み上げソフトには、下の ALL LINKS ボタンだけを伝える -->
+      <a href="https://linktr.ee/Daishi_1258" class="links-card" target="_blank" rel="noopener noreferrer" aria-hidden="true" tabindex="-1">
+        <img src="images/links-card.png" alt="" width="400" height="590" />
+      </a>
+
+      <a href="https://linktr.ee/Daishi_1258" class="linktree-highlight" target="_blank" rel="noopener noreferrer">
+        🔗 ALL LINKS
+      </a>
+    </div>
   </section>
 
 
@@ -206,7 +220,7 @@
     【JavaScript】動きやアニメーションをつけるプログラム
   =========================================== -->
   <script>
-    const targets = document.querySelectorAll('.fade-in-left');
+    const targets = document.querySelectorAll('.fade-in-left, .reveal-track, .reveal-up, .reveal-zoom');
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
