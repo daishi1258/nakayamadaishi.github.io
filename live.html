@@ -94,49 +94,16 @@
     </div>
   </div>
 
+  <script src="live-format.js?v=1"></script>
   <script>
     const SERVICE_DOMAIN = "junkie2631150"; 
     const API_KEY = "Yzz4uqi9JCUN0riBvtYRwVBuUMJ6q22Pvwce"; 
 
-    function toHalfWidth(str) {
-      if (!str) return '';
-      return str
-        .replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
-        .replace(/[Ａ-Ｚａ-ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
-        .replace(/：/g, ':')
-        .replace(/／/g, '/')
-        .replace(/￥/g, '¥');
-    }
-
+    // 書き方をそろえるしくみは live-format.js（index.html の NEXT LIVE と共通）
     function formatDate(rawDateStr) {
-      if (!rawDateStr) return { formatted: '', year: 0, month: 0, day: 0 };
-
-      let normalized = toHalfWidth(rawDateStr)
-        .replace(/[年月日\/\-]/g, '.')
-        .replace(/\.+/g, '.')
-        .trim();
-
-      const match = normalized.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
-
-      if (match) {
-        const year = parseInt(match[1]);
-        const month = parseInt(match[2]);
-        const day = parseInt(match[3]);
-
-        const monthStr = String(month).padStart(2, '0');
-        const dayStr = String(day).padStart(2, '0');
-
-        const dateObj = new Date(year, month - 1, day);
-        const dayNamesJa = ['日', '月', '火', '水', '木', '金', '土'];
-        const dayOfWeek = dayNamesJa[dateObj.getDay()];
-
-        return {
-          formatted: `${year}.${monthStr}.${dayStr} (${dayOfWeek})`,
-          year, month, day
-        };
-      }
-
-      return { formatted: toHalfWidth(rawDateStr), year: 0, month: 0, day: 0 };
+      const d = LiveFormat.parseDate(rawDateStr || '');
+      if (!d.end) return { formatted: d.text, year: 0, month: 0, day: 0 };
+      return { formatted: d.text, year: d.year, month: d.month, day: d.day };
     }
 
     function getStatusMessage(year, month, day) {
@@ -154,11 +121,7 @@
     }
 
     function formatDetail(rawDetailStr) {
-      if (!rawDetailStr) return '';
-      let text = toHalfWidth(rawDetailStr);
-      return text
-        .replace(/(開場|OPEN|Open)/g, 'open')
-        .replace(/(開演|START|Start)/g, 'start');
+      return LiveFormat.formatDetail(rawDetailStr || '');
     }
 
     // ライブのリストを、年月ごとにまとめて画面に追加する（isPast が true なら終了済みの見た目）
@@ -201,7 +164,7 @@
           li.innerHTML = `
             <span class="date">${dateInfo.formatted}</span>
             ${statusHTML}
-            <span class="venue">${item.place || ''}</span>
+            <span class="venue">${LiveFormat.formatPlace(item.place)}</span>
             <span class="desc">${formattedDetail}</span>
           `;
           ul.appendChild(li);

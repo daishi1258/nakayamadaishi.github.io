@@ -233,38 +233,16 @@
 
   <!-- NEXT LIVE：microCMS のライブ一覧から、今日以降でいちばん近い日程を1件選んで、カードに入れる
        （日付の読み取り方と「前売り予約受付中」などの表示は、live.html と同じ決まり） -->
+  <script src="live-format.js?v=1"></script>
   <script>
     const SERVICE_DOMAIN = "junkie2631150";
     const API_KEY = "Yzz4uqi9JCUN0riBvtYRwVBuUMJ6q22Pvwce";
 
-    // 全角の数字・記号を半角にそろえる
-    function toHalfWidth(str) {
-      if (!str) return '';
-      return str
-        .replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
-        .replace(/[Ａ-Ｚａ-ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
-        .replace(/：/g, ':')
-        .replace(/／/g, '/')
-        .replace(/￥/g, '¥');
-    }
-
-    // 「2026年10月8日」「2026.9/25」など、いろいろな書き方の日付を読み取る
+    // 書き方をそろえるしくみは live-format.js（live.html と共通）
     function parseLiveDate(rawDateStr) {
-      const normalized = toHalfWidth(rawDateStr || '')
-        .replace(/[年月日\/\-]/g, '.')
-        .replace(/\.+/g, '.');
-      const match = normalized.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
-      if (!match) return null;
-
-      const year = parseInt(match[1]);
-      const month = parseInt(match[2]);
-      const day = parseInt(match[3]);
-      const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][new Date(year, month - 1, day).getDay()];
-      return {
-        year, month, day,
-        formatted: `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} (${dayOfWeek})`,
-        end: new Date(year, month - 1, day, 23, 59, 59)
-      };
+      const d = LiveFormat.parseDate(rawDateStr || '');
+      if (!d.end) return null;
+      return { year: d.year, month: d.month, day: d.day, formatted: d.text, end: d.end };
     }
 
     function getStatusMessage(d) {
@@ -279,9 +257,7 @@
     }
 
     function formatDetail(rawDetailStr) {
-      return toHalfWidth(rawDetailStr || '')
-        .replace(/(開場|OPEN|Open)/g, 'open')
-        .replace(/(開演|START|Start)/g, 'start');
+      return LiveFormat.formatDetail(rawDetailStr || '');
     }
 
     async function showNextLive() {
@@ -309,7 +285,7 @@
 
         card.querySelector('.live-date').textContent = next.dateInfo.formatted;
         card.querySelector('.live-status').textContent = getStatusMessage(next.dateInfo);
-        card.querySelector('.live-venue').textContent = next.place || '';
+        card.querySelector('.live-venue').textContent = LiveFormat.formatPlace(next.place);
         details.innerHTML = formatDetail(next.detail);
       } catch (error) {
         console.error('エラー:', error);
