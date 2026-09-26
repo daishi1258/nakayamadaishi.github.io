@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!-- ==========================================================
      インスタのストーリー用の画像（1080×1920）：1か月分のライブをまとめた版
-     renderMonth(ライブの配列, 'OCTOBER') を呼んでから撮影する
+     renderMonth(ライブの配列, '2026.OCT', 写真のURL（省略可）) を呼んでから撮影する
      ========================================================== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,24 +17,24 @@
   body { font-family: 'Cormorant Garamond', 'Noto Sans JP', serif; position: relative; }
 
   .photo {
-    position: absolute; inset: 0 0 auto 0; height: 760px;
-    background: url('../../images/hero2.JPG') center 28% / cover no-repeat;
+    position: absolute; inset: 0 0 auto 0; height: 950px;
+    background: url('photos/IMG_1190.jpg') center -470px / 1080px auto no-repeat;
   }
   .photo::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(13,13,13,.35) 0%, rgba(13,13,13,0) 25%, rgba(13,13,13,0) 45%, #0d0d0d 100%);
+    background: linear-gradient(to bottom, rgba(13,13,13,.4) 0%, rgba(13,13,13,0) 22%, rgba(13,13,13,0) 72%, #0d0d0d 100%);
   }
   .name { position: absolute; top: 34px; left: 50%; width: 820px; transform: translateX(-50%); }
 
-  .head { position: absolute; top: 600px; left: 0; right: 0; text-align: center; }
+  .head { position: absolute; top: 810px; left: 0; right: 0; text-align: center; }
   .tag {
     display: inline-block; font-size: 32px; font-weight: 600; letter-spacing: .3em;
     padding: 6px 0 10px .3em; border-bottom: 1px solid rgba(255,255,255,.5);
   }
-  .month { font-size: 92px; font-weight: 500; letter-spacing: .12em; line-height: 1; margin-top: 22px; padding-left: .12em; }
+  .month { font-size: 84px; font-weight: 500; letter-spacing: .12em; line-height: 1; margin-top: 22px; padding-left: .12em; }
 
-  .list { position: absolute; top: 800px; left: 80px; right: 80px; bottom: 150px; display: flex; flex-direction: column; justify-content: center; }
-  .item { display: flex; gap: 40px; padding: 34px 0; border-top: 1px solid rgba(255,255,255,.18); }
+  .list { position: absolute; top: 1000px; left: 80px; right: 80px; bottom: 130px; display: flex; flex-direction: column; justify-content: center; }
+  .item { display: flex; gap: 40px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,.18); }
   .item:last-child { border-bottom: 1px solid rgba(255,255,255,.18); }
   .when { flex: 0 0 170px; text-align: center; }
   .when .d { font-size: 74px; font-weight: 500; line-height: 1; }
@@ -57,10 +57,11 @@
     <div class="month"></div>
   </div>
   <div class="list"></div>
-  <div class="foot">ご予約・詳細は nakayamadaishi.com</div>
+  <div class="foot">ご予約は homepage、もしくは Instagram DM にて</div>
 
 <script>
-  window.renderMonth = function (items, monthLabel) {
+  window.renderMonth = function (items, monthLabel, photo) {
+    if (photo) document.querySelector('.photo').style.backgroundImage = "url('" + photo + "')";
     document.querySelector('.month').textContent = monthLabel;
     var list = document.querySelector('.list');
     list.innerHTML = '';
