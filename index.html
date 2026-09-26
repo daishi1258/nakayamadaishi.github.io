@@ -57,18 +57,14 @@
          transition-delay で、見出し→カード→ボタンの順に、少しずつ遅らせる -->
     <h2 class="reveal-track">LIVE</h2>
 
-    <!-- NEXT LIVE カード -->
-    <div class="next-live-card reveal-up" style="transition-delay: 0.25s;">
+    <!-- NEXT LIVE カード。中身は、下の JavaScript が microCMS から読み込んで、
+         今日以降でいちばん近いライブを自動で入れる（ライブの日の23:59を過ぎたら、次のライブに切り替わる） -->
+    <div id="next-live-card" class="next-live-card reveal-up" style="transition-delay: 0.25s;">
       <div class="next-live-tag">NEXT LIVE</div>
-      <div class="live-date">2026.09.25 (金)</div>
-      <div class="live-status">前売り予約受付中</div>
-      <div class="live-venue">吉祥寺Planet C</div>
-      <div class="live-details">
-        <p>としぞー寿司presents 「お寿司と音楽」</p>
-        <p>open 18:30 / start 19:00</p>
-        <p>Music charge ¥2,500 別途1drink ¥600 or 1drinkおつまみ付き ¥1,000</p>
-        <p>出演: モリカワユウタ、鈴木モモ、8角K、景色と情景</p>
-      </div>
+      <div class="live-date"></div>
+      <div class="live-status"></div>
+      <div class="live-venue"></div>
+      <div class="live-details"><p>ライブ情報を読み込み中...</p></div>
     </div>
 
     <!-- 過去や今後の全ライブ情報ページ（live.html）へ移動するボタン -->
@@ -233,6 +229,95 @@
     });
 
     targets.forEach(target => observer.observe(target));
+  </script>
+
+  <!-- NEXT LIVE：microCMS のライブ一覧から、今日以降でいちばん近い日程を1件選んで、カードに入れる
+       （日付の読み取り方と「前売り予約受付中」などの表示は、live.html と同じ決まり） -->
+  <script>
+    const SERVICE_DOMAIN = "junkie2631150";
+    const API_KEY = "Yzz4uqi9JCUN0riBvtYRwVBuUMJ6q22Pvwce";
+
+    // 全角の数字・記号を半角にそろえる
+    function toHalfWidth(str) {
+      if (!str) return '';
+      return str
+        .replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
+        .replace(/[Ａ-Ｚａ-ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xfee0))
+        .replace(/：/g, ':')
+        .replace(/／/g, '/')
+        .replace(/￥/g, '¥');
+    }
+
+    // 「2026年10月8日」「2026.9/25」など、いろいろな書き方の日付を読み取る
+    function parseLiveDate(rawDateStr) {
+      const normalized = toHalfWidth(rawDateStr || '')
+        .replace(/[年月日\/\-]/g, '.')
+        .replace(/\.+/g, '.');
+      const match = normalized.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+      if (!match) return null;
+
+      const year = parseInt(match[1]);
+      const month = parseInt(match[2]);
+      const day = parseInt(match[3]);
+      const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][new Date(year, month - 1, day).getDay()];
+      return {
+        year, month, day,
+        formatted: `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} (${dayOfWeek})`,
+        end: new Date(year, month - 1, day, 23, 59, 59)
+      };
+    }
+
+    function getStatusMessage(d) {
+      const now = new Date();
+      const liveDayStart = new Date(d.year, d.month - 1, d.day, 0, 0, 0);
+      const liveDayCutoff = new Date(d.year, d.month - 1, d.day, 15, 0, 0);
+
+      if (now < liveDayStart) return '前売り予約受付中';
+      if (now < liveDayCutoff) return '当日15時までなら前売り予約受付中';
+      if (now <= d.end) return '飛び込みOK';
+      return '';
+    }
+
+    function formatDetail(rawDetailStr) {
+      return toHalfWidth(rawDetailStr || '')
+        .replace(/(開場|OPEN|Open)/g, 'open')
+        .replace(/(開演|START|Start)/g, 'start');
+    }
+
+    async function showNextLive() {
+      const card = document.getElementById('next-live-card');
+      const details = card.querySelector('.live-details');
+
+      try {
+        const response = await fetch(`https://${SERVICE_DOMAIN}.microcms.io/api/v1/live?limit=100`, {
+          headers: { "X-MICROCMS-API-KEY": API_KEY }
+        });
+        if (!response.ok) throw new Error('データ取得失敗');
+        const data = await response.json();
+
+        // 当日のライブは、その日の23:59:59まで「次のライブ」として残す
+        const now = new Date();
+        const next = data.contents
+          .map(item => ({ ...item, dateInfo: parseLiveDate(item.date) }))
+          .filter(item => item.dateInfo && item.dateInfo.end >= now)
+          .sort((a, b) => a.dateInfo.end - b.dateInfo.end)[0];
+
+        if (!next) {
+          details.innerHTML = '<p>現在予定されているライブはありません。</p>';
+          return;
+        }
+
+        card.querySelector('.live-date').textContent = next.dateInfo.formatted;
+        card.querySelector('.live-status').textContent = getStatusMessage(next.dateInfo);
+        card.querySelector('.live-venue').textContent = next.place || '';
+        details.innerHTML = formatDetail(next.detail);
+      } catch (error) {
+        console.error('エラー:', error);
+        details.innerHTML = '<p>ライブ情報は「View All」からご覧ください。</p>';
+      }
+    }
+
+    showNextLive();
   </script>
 
 </body>
