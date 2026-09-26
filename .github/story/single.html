@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<!-- ==========================================================
+     インスタのストーリー用の画像（1080×1920）：その月のライブが1本だけのときの特別版
+     renderSingle(ライブ1件, '2026.SEP') を呼んでから撮影する
+     1か月まとめ（month.html）と同じ写真・書体で、日付を大きく、月の円を後ろに置く
+     ========================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script src="../../live-format.js"></script>
+<script src="story-lines.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d0d0d; color: #fff; }
+  body { font-family: 'Cormorant Garamond', 'Noto Sans JP', serif; position: relative; }
+  :root { --gold: #d9c38e; }
+
+  .photo {
+    position: absolute; inset: 0 0 auto 0; height: 900px;
+    background: url('photos/IMG_1190.jpg') center -500px / 1080px auto no-repeat;
+  }
+  .photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(13,13,13,.4) 0%, rgba(13,13,13,0) 22%, rgba(13,13,13,0) 60%, #0d0d0d 100%);
+  }
+  .name {
+    position: absolute; top: 700px; left: 0; right: 0; text-align: center;
+    font-size: 60px; font-weight: 500; letter-spacing: .14em; padding-left: .14em; line-height: 1;
+    text-shadow: 0 2px 14px rgba(0,0,0,.35);
+  }
+
+  /* 月の円（日付の後ろ） */
+  .moon {
+    position: absolute; top: 850px; left: 50%; width: 420px; height: 420px; transform: translateX(-50%);
+    border-radius: 50%; border: 1px solid rgba(217,195,142,.55);
+    background: radial-gradient(circle, rgba(217,195,142,.16) 0%, rgba(217,195,142,.05) 55%, rgba(217,195,142,0) 72%);
+  }
+  .tag {
+    position: absolute; top: 800px; left: 0; right: 0; text-align: center;
+    font-size: 30px; font-weight: 600; letter-spacing: .4em; padding-left: .4em; color: var(--gold);
+  }
+  .date { position: absolute; top: 905px; left: 0; right: 0; text-align: center; }
+  .date .d { font-size: 230px; font-weight: 500; line-height: 1; letter-spacing: .02em; }
+  .date .w { font-size: 40px; font-weight: 600; letter-spacing: .35em; padding-left: .35em; margin-top: 18px; color: var(--gold); }
+
+  .info { position: absolute; top: 1300px; left: 90px; right: 90px; bottom: 150px; text-align: center; }
+  .sub { font-size: 34px; font-weight: 500; letter-spacing: .08em; color: #cfcfcf; }
+  .title { font-size: 80px; font-weight: 500; letter-spacing: .06em; line-height: 1.1; margin-top: 6px; }
+  .rule { width: 120px; height: 1px; background: var(--gold); margin: 30px auto; }
+  .venue { font-family: 'Noto Sans JP', sans-serif; font-size: 42px; font-weight: 500; }
+  .detail { font-family: 'Noto Sans JP', sans-serif; font-size: 28px; line-height: 1.7; color: #d4d4d4; margin-top: 20px; }
+
+  .foot {
+    position: absolute; left: 0; right: 0; bottom: 80px; text-align: center;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 26px; color: #aaa; letter-spacing: .05em;
+  }
+</style>
+</head>
+<body>
+  <div class="photo"></div>
+  <div class="name">Nakayama Daishi</div>
+  <div class="tag"></div>
+  <div class="moon"></div>
+  <div class="date"><div class="d"></div><div class="w"></div></div>
+  <div class="info">
+    <div class="sub"></div>
+    <div class="title"></div>
+    <div class="rule"></div>
+    <div class="venue"></div>
+    <div class="detail"></div>
+  </div>
+  <div class="foot">ご予約はホームページ、もしくは Instagram DM にて</div>
+
+<script>
+  window.renderSingle = function (item, tag) {
+    var d = LiveFormat.parseDate(item.date || '');
+    document.querySelector('.tag').textContent = tag || '';
+    document.querySelector('.date .d').textContent = d.month ? d.month + '.' + d.day : item.date;
+    document.querySelector('.date .w').textContent = d.week || '';
+    document.querySelector('.venue').textContent = LiveFormat.formatPlace(item.place || '');
+
+    // 1行目はイベント名。「―」で区切られていれば、前を小さく、後ろを大きく
+    var lines = storyLines(item.detail);
+    var first = lines.shift() || '';
+    // 次の行が「―」で始まるときは、イベント名の続き（Shift+Enter で改行してある）
+    if (lines.length && /^[―—－]/.test(lines[0])) first += ' ' + lines.shift();
+    var parts = first.split(/\s*[―—]\s*/);
+    var main = (parts.length > 1 ? parts.pop() : first).replace(/[－\-―—\s]+$/, '');
+    document.querySelector('.sub').textContent = parts.length ? parts.join(' ') : '';
+    document.querySelector('.title').textContent = main;
+
+    var box = document.querySelector('.detail');
+    lines.forEach(function (l) {
+      var p = document.createElement('p');
+      p.textContent = l;
+      box.appendChild(p);
+    });
+    return document.fonts.ready.then(function () { return true; });
+  };
+</script>
+</body>
+</html>

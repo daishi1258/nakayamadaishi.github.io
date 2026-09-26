@@ -30,5 +30,10 @@ window.storyLines = function (detailHtml) {
     if (cast && cast.length) cast = null;   // 段落が変わったら、名前集めは終わり
   });
 
-  return lines.map(function (l) { return Array.isArray(l) ? '出演: ' + l.join('、') : l; });
+  return lines.map(function (l) {
+    if (!Array.isArray(l)) return l;
+    // 名前の前後の「、」を取ってから、「、」でつなぎ直す（「、」が二重にならないように）
+    var names = l.join('、').split(/[、,]/).map(function (n) { return n.trim(); }).filter(Boolean);
+    return '出演: ' + names.join('、');
+  });
 };
