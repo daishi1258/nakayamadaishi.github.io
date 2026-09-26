@@ -1,0 +1,68 @@
+# ==========================================================
+# ライブ情報を microCMS で公開したら、ストーリー用の画像を自動で作って、Gmail に送る
+# 合図：microCMS の Webhook（GitHub Actions）→ repository_dispatch
+# 手動でも動かせる（GitHub の Actions 画面の「Run workflow」）
+#
+# GitHub の Settings → Secrets and variables → Actions に、次の3つを入れておく
+#   MICROCMS_API_KEY   … microCMS の読むだけのキー
+#   GMAIL_ADDRESS      … 送り先（兼 送り元）の Gmail アドレス
+#   GMAIL_APP_PASSWORD … Google のアプリパスワード（16文字）
+# ==========================================================
+name: story
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: story
+
+jobs:
+  story:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 日本語フォントと、撮影用のブラウザを入れる
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk
+          npm i --no-save playwright@1
+          npx playwright install --with-deps chromium
+      - name: 画像を作る
+        env:
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+        run: node .github/story/make-story.mjs
+      - name: 画像ができたか調べる
+        id: check
+        run: |
+          if ls .github/story/out/*.png >/dev/null 2>&1; then
+            echo "made=true" >> "$GITHUB_OUTPUT"
+            echo "files=$(ls .github/story/out/*.png | paste -sd, -)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Gmail に送る
+        if: steps.check.outputs.made == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.GMAIL_ADDRESS }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          from: ストーリー画像 <${{ secrets.GMAIL_ADDRESS }}>
+          to: ${{ secrets.GMAIL_ADDRESS }}
+          subject: 【ストーリー画像】新しいライブの画像ができました
+          body: |
+            新しいライブの、ストーリー用の画像ができました。
+            添付の画像を保存して、インスタのストーリーに上げてください。
+            （リンクスタンプで https://nakayamadaishi.com/live.html を付けるのがおすすめです）
+          attachments: ${{ steps.check.outputs.files }}
+      - name: 作成済みの一覧を保存する
+        run: |
+          git config user.name "story-bot"
+          git config user.email "story-bot@users.noreply.github.com"
+          git add .github/story/posted.json
+          git diff --cached --quiet || (git commit -m "ストーリー画像の作成済み一覧を更新" && git push)

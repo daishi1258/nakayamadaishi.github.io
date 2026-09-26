@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<!-- ==========================================================
+     インスタのストーリー用の画像（1080×1920）のひな型
+     microCMS のライブ情報を1件入れて、この画面を撮影して画像にする（make-story.mjs）
+     写真を変えるときは、下の .photo の url() を書き換える
+     ========================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script src="../../live-format.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d0d0d; color: #fff; }
+  body { font-family: 'Cormorant Garamond', 'Noto Sans JP', serif; position: relative; }
+
+  .photo {
+    position: absolute; inset: 0 0 auto 0; height: 1300px;
+    background: url('../../images/hero2.JPG') center 30% / cover no-repeat;
+  }
+  /* 写真の下を、サイトと同じ黒へ、なめらかにつなぐ */
+  .photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(13,13,13,.35) 0%, rgba(13,13,13,0) 22%, rgba(13,13,13,0) 55%, #0d0d0d 100%);
+  }
+  .name { position: absolute; top: 40px; left: 50%; width: 900px; transform: translateX(-50%); }
+
+  .info { position: absolute; left: 90px; right: 90px; bottom: 170px; text-align: center; }
+  .tag {
+    display: inline-block; font-size: 34px; font-weight: 600; letter-spacing: .3em;
+    padding: 6px 0 10px .3em; border-bottom: 1px solid rgba(255,255,255,.5); margin-bottom: 34px;
+  }
+  .date { font-size: 104px; font-weight: 500; line-height: 1; letter-spacing: .02em; }
+  .week { font-size: 40px; font-weight: 600; letter-spacing: .2em; margin-top: 18px; color: #ccc; }
+  .venue {
+    font-family: 'Noto Sans JP', sans-serif; font-size: 44px; font-weight: 500;
+    margin: 44px 0 30px; line-height: 1.4;
+  }
+  .detail {
+    font-family: 'Noto Sans JP', sans-serif; font-size: 29px; line-height: 1.7; color: #ddd;
+    max-height: 420px; overflow: hidden;
+  }
+  .detail p + p { margin-top: 4px; }
+  .foot {
+    position: absolute; left: 0; right: 0; bottom: 80px; text-align: center;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 26px; color: #aaa; letter-spacing: .05em;
+  }
+</style>
+</head>
+<body>
+  <div class="photo"></div>
+  <img class="name" src="../../images/moji.png" alt="">
+
+  <div class="info">
+    <div class="tag">NEXT LIVE</div>
+    <div class="date"></div>
+    <div class="week"></div>
+    <div class="venue"></div>
+    <div class="detail"></div>
+  </div>
+  <div class="foot">ご予約・詳細は nakayamadaishi.com</div>
+
+<script>
+  // microCMS のライブ情報1件を、画面に入れる
+  window.renderStory = function (item) {
+    var d = LiveFormat.parseDate(item.date || '');
+    document.querySelector('.date').textContent = d.ymd || d.text;
+    document.querySelector('.week').textContent = d.week || '';
+    document.querySelector('.venue').textContent = LiveFormat.formatPlace(item.place || '');
+
+    // 詳細は、段落ごとに1行。書き方は、サイトと同じにそろえる
+    var tmp = document.createElement('div');
+    tmp.innerHTML = String(item.detail || '').replace(/<br\s*\/?>/gi, '\n').replace(/<\/p>/gi, '\n');
+    var box = document.querySelector('.detail');
+    box.innerHTML = '';
+    tmp.textContent.split('\n').map(function (l) { return LiveFormat.formatDetail(l); })
+      .filter(Boolean).forEach(function (l) {
+        var p = document.createElement('p');
+        p.textContent = l;
+        box.appendChild(p);
+      });
+
+    // 詳細が長いときは、枠に収まるまで文字を小さくする
+    var size = 29;
+    while (box.scrollHeight > box.clientHeight && size > 20) {
+      box.style.fontSize = (--size) + 'px';
+    }
+    return document.fonts.ready.then(function () { return true; });
+  };
+</script>
+</body>
+</html>
