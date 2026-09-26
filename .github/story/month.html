@@ -46,8 +46,8 @@
   .what { flex: 1; min-width: 0; font-family: 'Noto Sans JP', sans-serif; }
   .venue { font-size: 36px; font-weight: 500; line-height: 1.35; }
   .detail { font-size: 24px; line-height: 1.6; color: #d4d4d4; margin-top: 10px; }
-  /* 1本だけ目立たせる版：そのライブの文字を、全部赤にする */
-  .item.hl .d, .item.hl .w, .item.hl .venue, .item.hl .detail { color: #e5433b; }
+  /* 1本だけ目立たせる版：そのライブは白のまま、ほかのライブを暗くする */
+  .list.has-hl .item:not(.hl) { opacity: .28; }
 
   .foot {
     position: absolute; left: 0; right: 0; bottom: 80px; text-align: center;
@@ -66,12 +66,13 @@
   <div class="foot">ご予約はホームページ、もしくは Instagram DM にて</div>
 
 <script>
-  // highlight：赤くするライブの番号（日付順で 1, 2, 3…）。0 や省略なら、赤字なし
+  // highlight：目立たせるライブの番号（日付順で 1, 2, 3…）。0 や省略なら、赤字なし
   window.renderMonth = function (items, monthLabel, photo, highlight) {
     if (photo) document.querySelector('.photo').style.backgroundImage = "url('" + photo + "')";
     document.querySelector('.month').textContent = monthLabel;
     var list = document.querySelector('.list');
     list.innerHTML = '';
+    list.classList.remove('has-hl');
 
     items.map(function (item) { return { item: item, d: LiveFormat.parseDate(item.date || '') }; })
       .sort(function (a, b) { return (a.d.day || 0) - (b.d.day || 0); })
@@ -90,7 +91,7 @@
           p.textContent = l;
           el.querySelector('.detail').appendChild(p);
         });
-        if (highlight && list.children.length + 1 === highlight) el.classList.add('hl');
+        if (highlight && list.children.length + 1 === highlight) { el.classList.add('hl'); list.classList.add('has-hl'); }
         list.appendChild(el);
       });
 
