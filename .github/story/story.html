@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <script src="../../live-format.js"></script>
+<script src="story-lines.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d0d0d; color: #fff; }
@@ -71,12 +72,9 @@
     document.querySelector('.venue').textContent = LiveFormat.formatPlace(item.place || '');
 
     // 詳細は、段落ごとに1行。書き方は、サイトと同じにそろえる
-    var tmp = document.createElement('div');
-    tmp.innerHTML = String(item.detail || '').replace(/<br\s*\/?>/gi, '\n').replace(/<\/p>/gi, '\n');
     var box = document.querySelector('.detail');
     box.innerHTML = '';
-    tmp.textContent.split('\n').map(function (l) { return LiveFormat.formatDetail(l); })
-      .filter(Boolean).forEach(function (l) {
+    storyLines(item.detail).forEach(function (l) {
         var p = document.createElement('p');
         p.textContent = l;
         box.appendChild(p);

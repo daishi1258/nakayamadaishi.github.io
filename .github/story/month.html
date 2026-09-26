@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<!-- ==========================================================
+     インスタのストーリー用の画像（1080×1920）：1か月分のライブをまとめた版
+     renderMonth(ライブの配列, 'OCTOBER') を呼んでから撮影する
+     ========================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script src="../../live-format.js"></script>
+<script src="story-lines.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d0d0d; color: #fff; }
+  body { font-family: 'Cormorant Garamond', 'Noto Sans JP', serif; position: relative; }
+
+  .photo {
+    position: absolute; inset: 0 0 auto 0; height: 760px;
+    background: url('../../images/hero2.JPG') center 28% / cover no-repeat;
+  }
+  .photo::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(13,13,13,.35) 0%, rgba(13,13,13,0) 25%, rgba(13,13,13,0) 45%, #0d0d0d 100%);
+  }
+  .name { position: absolute; top: 34px; left: 50%; width: 820px; transform: translateX(-50%); }
+
+  .head { position: absolute; top: 600px; left: 0; right: 0; text-align: center; }
+  .tag {
+    display: inline-block; font-size: 32px; font-weight: 600; letter-spacing: .3em;
+    padding: 6px 0 10px .3em; border-bottom: 1px solid rgba(255,255,255,.5);
+  }
+  .month { font-size: 92px; font-weight: 500; letter-spacing: .12em; line-height: 1; margin-top: 22px; padding-left: .12em; }
+
+  .list { position: absolute; top: 800px; left: 80px; right: 80px; bottom: 150px; display: flex; flex-direction: column; justify-content: center; }
+  .item { display: flex; gap: 40px; padding: 34px 0; border-top: 1px solid rgba(255,255,255,.18); }
+  .item:last-child { border-bottom: 1px solid rgba(255,255,255,.18); }
+  .when { flex: 0 0 170px; text-align: center; }
+  .when .d { font-size: 74px; font-weight: 500; line-height: 1; }
+  .when .w { font-size: 28px; font-weight: 600; letter-spacing: .2em; margin-top: 10px; color: #ccc; padding-left: .2em; }
+  .what { flex: 1; min-width: 0; font-family: 'Noto Sans JP', sans-serif; }
+  .venue { font-size: 36px; font-weight: 500; line-height: 1.35; }
+  .detail { font-size: 24px; line-height: 1.6; color: #d4d4d4; margin-top: 10px; }
+
+  .foot {
+    position: absolute; left: 0; right: 0; bottom: 80px; text-align: center;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 26px; color: #aaa; letter-spacing: .05em;
+  }
+</style>
+</head>
+<body>
+  <div class="photo"></div>
+  <img class="name" src="../../images/moji.png" alt="">
+  <div class="head">
+    <div class="tag">LIVE SCHEDULE</div>
+    <div class="month"></div>
+  </div>
+  <div class="list"></div>
+  <div class="foot">ご予約・詳細は nakayamadaishi.com</div>
+
+<script>
+  window.renderMonth = function (items, monthLabel) {
+    document.querySelector('.month').textContent = monthLabel;
+    var list = document.querySelector('.list');
+    list.innerHTML = '';
+
+    items.map(function (item) { return { item: item, d: LiveFormat.parseDate(item.date || '') }; })
+      .sort(function (a, b) { return (a.d.day || 0) - (b.d.day || 0); })
+      .forEach(function (x) {
+        var lines = storyLines(x.item.detail);
+
+        var el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = '<div class="when"><div class="d"></div><div class="w"></div></div>' +
+                       '<div class="what"><div class="venue"></div><div class="detail"></div></div>';
+        el.querySelector('.d').textContent = x.d.month ? x.d.month + '.' + (x.d.day < 10 ? '0' : '') + x.d.day : x.item.date;
+        el.querySelector('.w').textContent = x.d.week || '';
+        el.querySelector('.venue').textContent = LiveFormat.formatPlace(x.item.place || '');
+        lines.forEach(function (l) {
+          var p = document.createElement('p');
+          p.textContent = l;
+          el.querySelector('.detail').appendChild(p);
+        });
+        list.appendChild(el);
+      });
+
+    // 入りきらないときは、詳細の文字を小さくする
+    var size = 24;
+    while (list.scrollHeight > list.clientHeight && size > 18) {
+      size--;
+      list.querySelectorAll('.detail').forEach(function (b) { b.style.fontSize = size + 'px'; });
+    }
+    return document.fonts.ready.then(function () { return true; });
+  };
+</script>
+</body>
+</html>
